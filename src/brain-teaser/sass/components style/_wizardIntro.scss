@@ -1,0 +1,19 @@
+.wizard_intro{
+    display: flex;
+    flex-direction: column;
+}
+
+.wizard_intro_header{
+    text-align: center;
+    letter-spacing: 1px;
+text-transform: capitalize;
+    color: rgb(221, 221, 221);
+margin-bottom: 2rem;
+font-weight: bold;
+}
+.wizard_intro_text{
+    line-height: 2.1rem;
+}
+.wizard_Btn{
+    margin: 2rem auto;
+}

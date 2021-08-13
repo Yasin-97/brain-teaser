@@ -1,0 +1,48 @@
+.wizard_remem_header{
+    text-align: center;
+    letter-spacing: 1px;
+text-transform: capitalize;
+    color: rgb(170, 170, 170);
+margin-bottom: 1.2rem;
+}
+.wizard_remem_collection{
+    margin-bottom: 5rem;
+    display: flex;
+    flex-wrap: wrap;
+width: 100%;
+justify-content: center;
+}
+
+.wizard_remem_word{
+    flex-grow: 1;
+    max-width: 100%;
+    text-align: center;
+   padding: .7rem 1rem;
+   margin: .3rem ;
+   border-radius: .3rem;
+   font-size: .83rem;
+   font-weight: bold;
+   letter-spacing: 1px;
+   box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 0.425);
+   &:cap{
+   background-color: beige;
+
+   }
+}
+.wizard_remem_blank_space{
+    min-width: 4rem;
+    max-width: 100%;
+   padding-bottom: .2rem ;
+   margin: .5rem .7rem ;
+   font-size: .83rem;
+   font-weight: bold;
+   letter-spacing: 1px;
+   padding-right: .5rem;
+border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
+&_number{
+    color: rgba(245, 245, 245, 0.568);
+}
+
+}
+
+

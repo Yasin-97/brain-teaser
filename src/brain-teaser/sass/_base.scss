@@ -1,0 +1,35 @@
+.d_flex{
+    display: flex;
+}
+.justifyContent_center{
+justify-content: center;
+}
+.justifyContent_around{
+    justify-content: space-around;
+    }
+
+.alignItems_center{
+flex-direction: column;
+align-items: center;
+}
+// .alignItems_around{
+//     flex-direction: column;
+//     align-items:center
+//     }
+
+.page{
+    position: relative;
+    padding: 1.9rem;
+    width:100% ;
+// box-shadow: 1px 1px 1px 1px bisque ;
+// background-color: rgb(59, 59, 59);
+max-width: 500px;
+    // height: auto;
+}
+
+.header{
+   
+    margin-top:5rem;
+    text-align: center;
+   
+}
