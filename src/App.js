@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 // import { Form as Formy, Row, Container, Col, Button, Image } from "react-bootstrap";
 // import SimpleLogin from "./simpleLogin/SimpleLogin";
 // import DataContextProvider from "./simpleLogin/contextLayer";
-import WordGuessGameApp from "./word guess game/WordGuessGameApp";
+import BrainTeaser from './brain-teaser/BrainTeaser'
 
 function App() {
 
@@ -31,7 +31,7 @@ function App() {
 //     <><SimpleLogin /></>
 //     </DataContextProvider> 
 
-<WordGuessGameApp />
+<BrainTeaser />
   );
 }
 export default App;
