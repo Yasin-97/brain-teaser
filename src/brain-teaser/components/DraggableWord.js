@@ -6,7 +6,8 @@ import styled from "styled-components";
 
  const Word=styled.p`
 flex-grow: 1;
-    max-width: 100%;
+    max-width: 60%;
+    height: 100%;
     text-align: center;
    padding: .7rem 1rem;
    margin: .3rem ;
@@ -15,9 +16,9 @@ flex-grow: 1;
    font-weight: bold;
    letter-spacing: 1px;
    box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 0.425);
-   background-color: ${props => (props.isDragging ? 'lightGreen' : 'gray')};
+   background-color: ${props => (props.isDragging ? 'lightGreen' : 'transparent')};
 `;
-export default function DraggableWord({id,word,index}) {
+export default function DraggableWord({id,wordNumber,word,index}) {
 
    
     return (
@@ -31,7 +32,7 @@ export default function DraggableWord({id,word,index}) {
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         isDragging={isDragging}
-        >{word}</Word>
+        >{wordNumber&& `${wordNumber+"- "}`}{ word}</Word>
         )}}
         </Draggable>
     )
