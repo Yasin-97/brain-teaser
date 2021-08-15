@@ -3,7 +3,7 @@ import Card from './Card'
 import styles from '../css/main.min.module.css'
 import Button from "./Button";
 
-export default function MemorizeSession() {
+export default function MemorizeSession({durationEnd}) {
     return (
          <Card
    className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center} ${styles.justifyContent_around}`}
@@ -26,7 +26,10 @@ export default function MemorizeSession() {
         </div>
         </div> 
          <div>
-        <Button className={styles.wizard_Btn} text ={'FINISH'}/>
+        <Button className={styles.wizard_Btn} onClick={()=>{}}
+         duration={18} text ={'FINISH'}
+         durationEnd={(duration)=>durationEnd(duration)}
+         />
         </div>
         </Card> 
     )

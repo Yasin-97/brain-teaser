@@ -23,12 +23,7 @@ export default function RememberSession({ level, words, time }) {
   // const [orderedList, setOrderedList]=useState([])
   const [timer, setTimer] = useState(time);
 
-  // useEffect(() => {
-  //   if (timer > 0)
-  //     setTimeout(() => {
-  //       setTimer((prev) => prev - 1);
-  //     }, 1000);
-  //   }, [timer]);
+  
 
   function handleOnDragEnd(result) {
     const start = secondaryData[result.source.droppableId];
@@ -91,9 +86,9 @@ export default function RememberSession({ level, words, time }) {
     <Card
       className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center} ${styles.justifyContent_around}`}
     >
-      <div>
+      {/* <div>
         <h1 className={styles.timer}>level {level}</h1>
-      </div>
+      </div> */}
 
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <div>
@@ -131,7 +126,7 @@ export default function RememberSession({ level, words, time }) {
         </div>
       </DragDropContext>
       <div>
-        <Button className={styles.wizard_Btn} text={`FINISH ${timer}`} />
+        <Button className={styles.wizard_Btn} onClick={()=>{}} duration={18} text='FINISH'  />
       </div>
     </Card>
   );
