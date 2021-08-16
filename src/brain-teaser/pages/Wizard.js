@@ -32,15 +32,6 @@ export default function Wizard() {
 
   const isQuit = (quit) => setQuit(quit);
 
-  //data
-  const words = [
-    { id: "0", word: "man" },
-    { id: "1", word: "woman" },
-    { id: "2", word: "kid" },
-    { id: "3", word: "Harry potter" },
-    { id: "4", word: "overWhelmed" },
-    { id: "5", word: "mindfullness" },
-  ];
 
   if (renderIntro)
     return (
@@ -83,5 +74,5 @@ export default function Wizard() {
         );
       }
     }
-  }
+  } 
 }
