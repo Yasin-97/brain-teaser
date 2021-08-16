@@ -1,0 +1,23 @@
+
+.overlay_content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: whitesmoke;
+width: 90%;
+max-width: 28rem;
+border-radius: .3rem;
+background: #0f0f0f;
+padding: 1.5rem;
+}
+.overlay_header{
+color: #dbdbdb;
+font-size: 1.5rem;
+margin-bottom: 1rem;
+}
+
+.overlay_text{
+font-size: 1.15rem;
+font-weight: 400;
+color: darken($color: #dbdbdb, $amount: 10);
+}
