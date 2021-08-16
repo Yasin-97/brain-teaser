@@ -1,43 +1,87 @@
-import React, { useState,useEffect } from "react";
-import WizardIntro from '../components/WizardIntro'
+import React, { useState, useEffect } from "react";
+import WizardIntro from "../components/WizardIntro";
 import RememberSession from "../components/RememberSession";
-import MemorizeSession from '../components/MemorizeSession'
-import Overlay from '../components/Overlay'
+import MemorizeSession from "../components/MemorizeSession";
+import Conclusion from "../components/Conclusion";
+import Overlay from "../components/Overlay";
+import data from "../routes/hard";
 export default function Wizard() {
-  const [getPlaying, setGetPlaying] = useState(false);
+  //states
   const [renderIntro, setRenderIntro] = useState(true);
-  const [memoTime,setMemoTime]=useState()
+  const [renderRemeSession, setRenderRemeSession] = useState(false);
+  const [memoTime, setMemoTime] = useState();
+  const [rememTime, setRememTime] = useState();
+  const [nextLevel, setNextLevel] = useState();
+  const [quit, setQuit] = useState();
+  const [memoSavedTime, setMemoSavedTime] = useState();
+  const [rememSavedTime, setRememSavedTime] = useState();
+  console.log("memoSavedTime now", memoSavedTime, rememSavedTime);
 
-console.log('memo is now',memoTime);
-  const noIntroRender=(isTrue)=>{
-    setRenderIntro(isTrue)
-  }
+  //fucntions
+
+  const isIntroRender = (isTrue) => setRenderIntro(isTrue);
+
+  const isMemoTimeEnd = (duration) => setMemoTime(duration);
+  const isMemoSavedTime = (savedTime) => setMemoSavedTime(savedTime);
+
+  const isRememRender = (isTrue) => setRenderRemeSession(isTrue);
+  const isRememTimeEnd = (duration) => setRememTime(duration);
+  const isRememSavedTime = (savedTime) => setRememSavedTime(savedTime);
+
+  const isNextLevel = (nextLevel) => setNextLevel(nextLevel);
+
+  const isQuit = (quit) => setQuit(quit);
+
+  //data
   const words = [
-    { id: '0', word: "man" },
-    { id: '1', word: "woman" },
-    { id: '2', word: "kid" },
-    { id: '3', word: "Harry potter" },
-    { id: '4', word: "overWhelmed" },
-    { id: '5', word: "mindfullness" },
+    { id: "0", word: "man" },
+    { id: "1", word: "woman" },
+    { id: "2", word: "kid" },
+    { id: "3", word: "Harry potter" },
+    { id: "4", word: "overWhelmed" },
+    { id: "5", word: "mindfullness" },
   ];
 
-const levelsDetails={
-  difficulty:'hard',
-  introDescription:"hard difficulty is a chain of 15 levels",
-  level1:{
-    level:1,
-    wordColection:words,
-    memoDuration:19,
-    rememDuration:21,
-    exactitudePercentage:0,
-    savedtime: 0,
-    point:0/10,
-    rate:0
+  if (renderIntro)
+    return (
+      <WizardIntro
+        description={data.introDescription}
+        renderIntroOver={isIntroRender}
+      />
+    );
+  else {
+    if (memoTime !== 0)
+      return (
+        <MemorizeSession
+          memoDuration={data.levels[0].memoDuration}
+          durationEnd={isMemoTimeEnd}
+          savedTime={isMemoSavedTime}
+        />
+      );
+    else {
+      if (!renderRemeSession) {
+        return (
+          <Overlay isRememRender={isRememRender} savedTime={memoSavedTime} />
+        );
+      } else {
+        if (rememTime !== 0) {
+          return (
+            <RememberSession
+              durationEnd={isRememTimeEnd}
+              rememDuration={data.levels[0].rememDuration}
+              words={words}
+              savedTime={isRememSavedTime}
+            />
+          );
+        }
+        return (
+          <Conclusion
+            quit={isQuit}
+            nextLevel={isNextLevel}
+            savedTime={rememSavedTime}
+          />
+        );
+      }
+    }
   }
-}
- 
- return <Overlay />
-// if(memoTime===0) return <RememberSession time={18} words={words} level={5} />
-//  else if(renderIntro===false) return <MemorizeSession durationEnd={(duration)=>setMemoTime(duration)} /> 
-//  else if(renderIntro===true)return <WizardIntro description={levelsDetails.introDescription} renderIntroOver={noIntroRender} />
 }

@@ -6,7 +6,14 @@ import DroppableContainer from "./DroppableContainer";
 import DraggableWord from "./DraggableWord";
 import styles from "../css/main.min.module.css";
 
-export default function RememberSession({ level, words, time }) {
+export default function RememberSession({
+  level,
+  words,
+  time,
+  rememDuration,
+  durationEnd,
+  savedTime,
+}) {
   const [initialData, setInitialData] = useState(words);
   const [secondaryData, setSecondaryData] = useState({
     column1: {
@@ -20,10 +27,21 @@ export default function RememberSession({ level, words, time }) {
   });
 
   const [overDraggedContainer, setOverDraggedContainer] = useState(false);
-  // const [orderedList, setOrderedList]=useState([])
-  const [timer, setTimer] = useState(time);
 
-  
+  //state
+  const [counter, setCounter] = useState(rememDuration);
+
+  //effects
+  useEffect(() => {
+    if (rememDuration) {
+      if (counter > 0)
+        setTimeout(() => {
+          console.log(counter);
+          setCounter((prev) => prev - 1);
+        }, 1000);
+      else durationEnd(counter);
+    }
+  }, [counter]);
 
   function handleOnDragEnd(result) {
     const start = secondaryData[result.source.droppableId];
@@ -39,8 +57,6 @@ export default function RememberSession({ level, words, time }) {
     }
 
     if (start === finish) {
-      // const items = Array.from(secondaryData.column1.data);
-
       const items = Array.from(secondaryData[result.source.droppableId].data);
       const [reorderedItem] = items.splice(result.source.index, 1);
       items.splice(result.destination.index, 0, reorderedItem);
@@ -86,10 +102,6 @@ export default function RememberSession({ level, words, time }) {
     <Card
       className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center} ${styles.justifyContent_around}`}
     >
-      {/* <div>
-        <h1 className={styles.timer}>level {level}</h1>
-      </div> */}
-
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <div>
           <h4 className={styles.wizard_remem_header}>get them back in order</h4>
@@ -126,7 +138,15 @@ export default function RememberSession({ level, words, time }) {
         </div>
       </DragDropContext>
       <div>
-        <Button className={styles.wizard_Btn} onClick={()=>{}} duration={18} text='FINISH'  />
+        <Button
+          className={styles.wizard_Btn}
+          onClick={() => {
+            savedTime(counter);
+            durationEnd(0);
+          }}
+          duration={counter}
+          text="FINISH"
+        />
       </div>
     </Card>
   );
