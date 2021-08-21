@@ -1,42 +1,73 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState,useEffect } from "react";
 import {
   novice,
   intermediate,
   expert,
-} from "../difficultyLevel/difficultyLevel";
+} from "../phaseDetail/phaseDetail";
+import {wordCollection} from '../assets/word data/wordData'
+
 
 const DataContext = createContext();
 
 export const useDataContext = () => useContext(DataContext);
 
 const DataProvider = ({ children }) => {
-  const [difficulty, setDifficulty] = useState();
-  const [currentLevel, setCurrentLevel] = useState(0);
+  //state
+  const [phase, setPhase] = useState();
+  const [currentLevel, setCurrentLevel] = useState(0)
+  const [words,setWords]=useState()
+  const [isRenderIntro,setisRenderIntro]=useState(true)
+  const [isRenderMemo,setIsRenderMemo]=useState(false)
+  const [isRenderOverlay,setIsRenderOverlay]=useState(false)
+  const [isRenderRemem,setIsRenderRemem]=useState(false)
+  const [isRenderConclusion,setIsRenderConclusion]=useState(false)
+  // const [isRememTimeEnded,setIsRememTimeEnded]=useState(false)
+  const [memoSavedTime,setMemoSavedTime]=useState()
+  const [rememSavedTime,setRememSavedTime]=useState()
   const [levelPoints, setLevelPoints] = useState();
-console.log(difficulty);
+  
+  // const [introDescription,setIntroDescription]=useState()
+  // const [memoDuration,setMemoDuration]=useState()
+  // const [rememDuration,setRememDuration]=useState()
+
+  //effects
+  useEffect(()=>{
+    phase&&setWords(shuffle(wordCollection,phase.levels[currentLevel].wordCollection))
+    
+    },[phase])
+
   //function
   const getPhaseDifficulty = (diff) => {
     switch (diff) {
       case 1:
-        setDifficulty(novice);
+        setPhase(novice);
         break;
       case 2:
-        setDifficulty(intermediate);
+        setPhase(intermediate);
         break;
       case 3:
-        setDifficulty(expert);
+        setPhase(expert);
         break;
       default:
         break;
     }
   };
-
+  const renderIntro=(bool)=>setisRenderIntro(bool)
+  const renderMemo=(bool)=>setIsRenderMemo(bool)
+  const renderOverlay=(bool)=>setIsRenderOverlay(bool)
+  const renderRemem=(bool)=>setIsRenderRemem(bool)
+  const renderConclusion=(bool)=>setIsRenderConclusion(bool)
+const memoTimeSaver=(time)=>setMemoSavedTime(time)
+const rememTimeSaver=(time)=>setRememSavedTime(time)
+  // const memoTimeEnded=(bool)=>setIsMemoTimeEnded(bool)
+  // const rememTimeEnded=(bool)=>setIsRememTimeEnded(bool)
   const setNextLevel = () => setCurrentLevel((pre) => pre + 1);
   const getLevelPoints = (points) => setLevelPoints(points);
 
-  function shuffle(array) {
+  function shuffle(array,num) {
     let currentIndex = array.length;
     let randomIndex;
+    let newArr=[];
     while (currentIndex != 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
@@ -45,7 +76,8 @@ console.log(difficulty);
         array[currentIndex],
       ];
     }
-    return array;
+    
+    return array.slice(0,num)
   }
 
   const arraySimilarity = (arr1, arr2) => {
@@ -59,14 +91,37 @@ console.log(difficulty);
     };
   };
 
+
+
+
   const value = {
     //states
-    difficulty,
+    words,
+
+    phase,
+    isRenderIntro,
+    isRenderMemo,
+    isRenderOverlay,
+    isRenderRemem,
+    isRenderConclusion,
+    memoSavedTime,
+    rememSavedTime,
+    // isMemoTimeEnded,
+    // isRememTimeEnded,
     currentLevel,
     levelPoints,
 
     //functions
     getPhaseDifficulty,
+    renderIntro,
+    renderMemo,
+    renderOverlay,
+    renderRemem,
+    renderConclusion,
+    memoTimeSaver,
+    rememTimeSaver,
+    // memoTimeEnded,
+    // rememTimeEnded,
     getLevelPoints,
     setNextLevel,
     shuffle,
