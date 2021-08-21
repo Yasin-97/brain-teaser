@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDataContext } from "../context/Context";
 import styled from 'styled-components'
 import styles from '../css/main.min.module.css'
 import Button from './Button'
@@ -20,15 +21,19 @@ position: fixed;
 
 
 
-export default function Overlay({isRememRender,savedTime}) {
+export default function Overlay() {
+  const {memoSavedTime,renderOverlay,renderRemem}=useDataContext()
+
     return (
         <OverlayContainer>
             <div className={styles.overlay_content}>
                 <h4 className={styles.overlay_header}>Memorization time is finished</h4>
-                <p className={styles.overlay_text}> So now let's get them back in order !{savedTime}</p>
+                <p className={styles.overlay_text}> So now let's get them back in order !{memoSavedTime} sec</p>
                 <p className={styles.overlay_text}> you saved 10sec,so you got 29 sec to reorder them back</p>
 
-                <Button className={styles.action_Btn} text={'GET GOING'} onClick={()=>isRememRender(true)}/>
+                <Button className={styles.action_Btn} text={'GET GOING'} onClick={()=>{ 
+                    renderOverlay(false)
+                    renderRemem(true)}}/>
             </div>
             
         </OverlayContainer>

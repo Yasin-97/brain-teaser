@@ -1,42 +1,66 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useDataContext } from "../context/Context";
 import Button from "./Button";
 import Card from "./Card";
 import DroppableContainer from "./DroppableContainer";
 import DraggableWord from "./DraggableWord";
 import styles from "../css/main.min.module.css";
 
-export default function RememberSession({ level, words, time,rememDuration,durationEnd,savedTime }) {
-  const [initialData, setInitialData] = useState(words);
-  const [secondaryData, setSecondaryData] = useState({
+
+
+
+
+export default function RememberSession() {
+  
+  //context
+  const {phase,
+    words,
+    currentLevel,
+    renderRemem,
+    renderConclusion,
+    rememTimeSaver,
+     getLevelPoints,
+     shuffle,
+     arraySimilarity
+    }=useDataContext()
+  const {levels}=phase
+  
+  //state
+    const [columnsData, setColumnsData] = useState({
     column1: {
       id: "column1",
-      data: initialData,
-    },
+      data:shuffle([...words],5),//words //...words
+        },
     column2: {
       id: "column2",
       data: [],
     },
   });
-
   const [overDraggedContainer, setOverDraggedContainer] = useState(false);
+  const [counter, setCounter] = useState(levels[currentLevel].rememDuration);
 
-  //state
-  const [counter, setCounter] = useState(rememDuration);
-
-  //effects
+ 
+ //effect
 useEffect(() => {
-    if (rememDuration) {
-      if (counter > 0) setTimeout(() =>{
-        console.log(counter)
+  let timer;
+      if (counter > 0) timer= setTimeout(() =>{
       setCounter((prev) => prev - 1)}, 1000)
-      else durationEnd(counter)
-    }
+
+      else{
+        getLevelPoints(arraySimilarity(words,columnsData.column2.data))
+        renderRemem(false)
+        renderConclusion(true)
+        rememTimeSaver(counter)
+    }  
+    return ()=>clearTimeout(timer)
   }, [counter]);
   
 
+//functions  
+  const isOverDraggedContainer=(isDraggingOver) =>setOverDraggedContainer(isDraggingOver)
+
   function handleOnDragEnd(result) {
-    
     if (!result.destination) return;
 
     if (
@@ -46,30 +70,27 @@ useEffect(() => {
       return;
     }
 
-    const start = secondaryData[result.source.droppableId];
-    const finish = secondaryData[result.destination.droppableId];
+    const start = columnsData[result.source.droppableId];
+    const finish = columnsData[result.destination.droppableId];
 
     if (start === finish) {
-      // const items = Array.from(secondaryData.column1.data);
+      // const items = Array.from(columnsData[result.source.droppableId].data);
+      // const [reorderedItem] = items.splice(result.source.index, 1);
+      // items.splice(result.destination.index, 0, reorderedItem);
 
-      const items = Array.from(secondaryData[result.source.droppableId].data);
-      const [reorderedItem] = items.splice(result.source.index, 1);
-      items.splice(result.destination.index, 0, reorderedItem);
-
-      setSecondaryData({
-        ...secondaryData,
-        [result.source.droppableId]: {
-          ...secondaryData[result.source.droppableId],
-          data: items,
-        },
-      });
+      // setColumnsData({
+      //   ...columnsData,
+      //   [result.source.droppableId]: {
+      //     ...columnsData[result.source.droppableId],
+      //     data: items,
+      //   },
+      // });
       return;
     }
 
-    const startMove = Array.from(secondaryData[result.source.droppableId].data);
+    const startMove = Array.from(columnsData[result.source.droppableId].data);
     const [movedItem] = startMove.splice(result.source.index, 1);
-    console.log("now", movedItem, startMove);
-    setSecondaryData((pre) => ({
+    setColumnsData((pre) => ({
       ...pre,
       [result.source.droppableId]: {
         ...pre[result.source.droppableId],
@@ -78,13 +99,11 @@ useEffect(() => {
     }));
 
     const endMove = Array.from(
-      secondaryData[result.destination.droppableId].data
+      columnsData[result.destination.droppableId].data
     );
-    console.log(result.destination.droppableId);
     endMove.splice(result.destination.index, 0, movedItem);
-    console.log(secondaryData.column1.data);
 
-    setSecondaryData((pre) => ({
+    setColumnsData((pre) => ({
       ...pre,
       [result.destination.droppableId]: {
         ...pre[result.destination.droppableId],
@@ -95,16 +114,16 @@ useEffect(() => {
 
   return (
     <Card
-      className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center} ${styles.justifyContent_around}`}
+      className={`${styles.page}
+       ${styles.d_flex}
+       ${styles.alignItems_center}
+       ${styles.justifyContent_around}`}
     >
-         
-
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <div>
           <h4 className={styles.wizard_remem_header}>get them back in order</h4>
-
-          <DroppableContainer isDraggedOver={(arg) => {}} id={"column1"}>
-            {secondaryData.column1.data.map(({ id, word }, index) => {
+          <DroppableContainer isDraggedOver={(arg) => {}} id={columnsData.column1.id}>
+            {columnsData.column1.data.map(({ id, word }, index) => {
               return (
                 <DraggableWord key={id} id={id} word={word} index={index} />
               );
@@ -112,32 +131,37 @@ useEffect(() => {
           </DroppableContainer>
 
           <DroppableContainer
-            isDraggedOver={(isDraggingOver) =>
-              setOverDraggedContainer(isDraggingOver)
-            }
-            id={"column2"}
+            isDraggedOver={ ()=>isOverDraggedContainer }
+            id={columnsData.column2.id}
           >
             {overDraggedContainer === false &&
-            secondaryData.column2.data.length === 0 ? (
-              <h5>nice man</h5>
-            ) : (
-              secondaryData.column2.data.map(({ id, word }, index) => (
+            columnsData.column2.data.length === 0 ? (
+              <h5>Drag over here</h5>
+            ) :
+             (
+              columnsData.column2.data.map(({ id, word }, index) => (
                 <DraggableWord
                   key={id}
-                  wordNumber={index + 1}
                   id={id}
                   word={word}
                   index={index}
+                  wordNumber={index + 1}
                 />
               ))
-            )}
+            )
+            }
           </DroppableContainer>
         </div>
       </DragDropContext>
       <div>
         <Button
          className={styles.wizard_Btn}
-         onClick={()=>{ savedTime(counter); durationEnd(0)}}
+         onClick={()=>{ 
+          rememTimeSaver(counter); 
+          renderRemem(false)
+          renderConclusion(true)
+          getLevelPoints(arraySimilarity(words,columnsData.column2.data))
+        }}
           duration={counter} text='FINISH'
           />
       </div>

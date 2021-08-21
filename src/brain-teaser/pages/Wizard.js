@@ -1,76 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  useRouteMatch, useParams
+} from "react-router-dom";
+import { useDataContext } from "../context/Context";
+//components
 import WizardIntro from "../components/WizardIntro";
 import RememberSession from "../components/RememberSession";
 import MemorizeSession from "../components/MemorizeSession";
 import Conclusion from "../components/Conclusion";
 import Overlay from "../components/Overlay";
-import data from "../routes/hard";
+
+
 export default function Wizard() {
-  //states
-  const [renderIntro, setRenderIntro] = useState(true);
-  const [renderRemeSession, setRenderRemeSession] = useState(false);
-  const [memoTime, setMemoTime] = useState();
-  const [rememTime, setRememTime] = useState();
-  const [nextLevel, setNextLevel] = useState();
-  const [quit, setQuit] = useState();
-  const [memoSavedTime, setMemoSavedTime] = useState();
-  const [rememSavedTime, setRememSavedTime] = useState();
-  console.log("memoSavedTime now", memoSavedTime, rememSavedTime);
 
-  //fucntions
+  let match = useRouteMatch();
+  let { slug } = useParams();
+  console.log(match, slug );
 
-  const isIntroRender = (isTrue) => setRenderIntro(isTrue);
-
-  const isMemoTimeEnd = (duration) => setMemoTime(duration);
-  const isMemoSavedTime = (savedTime) => setMemoSavedTime(savedTime);
-
-  const isRememRender = (isTrue) => setRenderRemeSession(isTrue);
-  const isRememTimeEnd = (duration) => setRememTime(duration);
-  const isRememSavedTime = (savedTime) => setRememSavedTime(savedTime);
-
-  const isNextLevel = (nextLevel) => setNextLevel(nextLevel);
-
-  const isQuit = (quit) => setQuit(quit);
+  //context
+  const {
+    isRenderIntro,
+    isRenderMemo,
+    isRenderOverlay,
+    isRenderRemem
+    }=useDataContext()
 
 
-  if (renderIntro)
+  if (isRenderIntro)
     return (
-      <WizardIntro
-        description={data.introDescription}
-        renderIntroOver={isIntroRender}
-      />
+      <WizardIntro />
     );
   else {
-    if (memoTime !== 0)
+    if (isRenderMemo){
       return (
-        <MemorizeSession
-          memoDuration={data.levels[0].memoDuration}
-          durationEnd={isMemoTimeEnd}
-          savedTime={isMemoSavedTime}
-        />
-      );
+        <MemorizeSession />
+      );}
     else {
-      if (!renderRemeSession) {
+      if (isRenderOverlay) {
         return (
-          <Overlay isRememRender={isRememRender} savedTime={memoSavedTime} />
+          <Overlay />
         );
       } else {
-        if (rememTime !== 0) {
+        if (isRenderRemem) {
           return (
-            <RememberSession
-              durationEnd={isRememTimeEnd}
-              rememDuration={data.levels[0].rememDuration}
-              words={words}
-              savedTime={isRememSavedTime}
-            />
+            <RememberSession />
           );
         }
         return (
-          <Conclusion
-            quit={isQuit}
-            nextLevel={isNextLevel}
-            savedTime={rememSavedTime}
-          />
+          <Conclusion />
         );
       }
     }

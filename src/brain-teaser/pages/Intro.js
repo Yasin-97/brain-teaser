@@ -2,7 +2,6 @@ import React from "react";
 import {Link} from 'react-router-dom'
 import Button from "../components/Button";
 import Card from "../components/Card";
-// import HeaderText from '../components/HeaderText'
 import styles from "../css/main.min.module.css";
 
 export default function Intro() {
