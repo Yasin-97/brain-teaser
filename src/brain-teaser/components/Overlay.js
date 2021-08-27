@@ -1,5 +1,6 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { useDataContext } from "../context/Context";
+import {useHistory} from "react-router-dom";
 import styled from 'styled-components'
 import styles from '../css/main.min.module.css'
 import Button from './Button'
@@ -22,16 +23,21 @@ position: fixed;
 
 
 export default function Overlay() {
-  const {memoSavedTime,renderOverlay,renderRemem}=useDataContext()
+    const history=useHistory()
 
+    // useEffect(()=>history.push(`overlay`),[])
+
+  const {phase,currentLevel,memoSavedTime,renderOverlay,renderRemem}=useDataContext()
+const {route}=phase
     return (
         <OverlayContainer>
             <div className={styles.overlay_content}>
-                <h4 className={styles.overlay_header}>Memorization time is finished</h4>
-                <p className={styles.overlay_text}> So now let's get them back in order !{memoSavedTime} sec</p>
-                <p className={styles.overlay_text}> you saved 10sec,so you got 29 sec to reorder them back</p>
+                <h4 className={styles.overlay_header}>Ready to keep going ?</h4>
+                {memoSavedTime!==0&&<p className={styles.overlay_text}> Nice in the previous part you svaed {memoSavedTime}sec, so it gonna be added to next part's time!</p>}
+                <p className={styles.overlay_text}>In the next part those words are unorderd, Get them back in order as previous part!</p>
 
                 <Button className={styles.action_Btn} text={'GET GOING'} onClick={()=>{ 
+                    history.replace(`/wizard/${route}/${currentLevel}/remem`)
                     renderOverlay(false)
                     renderRemem(true)}}/>
             </div>

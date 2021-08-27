@@ -16,10 +16,9 @@ export default function Intro() {
       </div>
       <div className={styles.desc}>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere,
-          obcaecati. Expedita voluptate quam ratione nam debitis beatae dolor
-          voluptatem, animi consequuntur! Ipsa doloribus expedita architecto
-          quam possimus voluptatum quasi sapiente!
+          In this brain-teaser like game you are going to be given some random words to memorize 
+          its order then they get unorderd and you are going to  get them back in order
+          in the given time.  
         </p>
       </div>
       <Link to="/difficulty-specify">

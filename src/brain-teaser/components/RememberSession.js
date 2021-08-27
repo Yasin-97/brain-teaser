@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {useHistory} from "react-router-dom";
 import { useDataContext } from "../context/Context";
 import Button from "./Button";
 import Card from "./Card";
@@ -12,11 +13,12 @@ import styles from "../css/main.min.module.css";
 
 
 export default function RememberSession() {
-  
+const history=useHistory()
   //context
   const {phase,
     words,
     currentLevel,
+    memoSavedTime,
     renderRemem,
     renderConclusion,
     rememTimeSaver,
@@ -24,13 +26,12 @@ export default function RememberSession() {
      shuffle,
      arraySimilarity
     }=useDataContext()
-  const {levels}=phase
-  
+  const {route,levels}=phase
   //state
     const [columnsData, setColumnsData] = useState({
     column1: {
       id: "column1",
-      data:shuffle([...words],5),//words //...words
+      data:shuffle([...words],levels[currentLevel].wordCollection.length),//words //...words
         },
     column2: {
       id: "column2",
@@ -38,23 +39,28 @@ export default function RememberSession() {
     },
   });
   const [overDraggedContainer, setOverDraggedContainer] = useState(false);
-  const [counter, setCounter] = useState(levels[currentLevel].rememDuration);
+  const [counter, setCounter] = useState(levels[currentLevel].rememDuration+memoSavedTime);
 
  
  //effect
+//  useEffect(()=>history.push(`remem`),[])
+
 useEffect(() => {
   let timer;
-      if (counter > 0) timer= setTimeout(() =>{
+      if (counter > 0){ timer= setTimeout(() =>{
       setCounter((prev) => prev - 1)}, 1000)
-
+      sessionStorage.setItem('rememContinued',JSON.stringify(counter))}
       else{
         getLevelPoints(arraySimilarity(words,columnsData.column2.data))
         renderRemem(false)
         renderConclusion(true)
         rememTimeSaver(counter)
+        history.replace(`/wizard/${route}/${currentLevel}/conclusion`)
+        sessionStorage.removeItem('rememContinued')
     }  
     return ()=>clearTimeout(timer)
   }, [counter]);
+
   
 
 //functions  
@@ -161,6 +167,8 @@ useEffect(() => {
           renderRemem(false)
           renderConclusion(true)
           getLevelPoints(arraySimilarity(words,columnsData.column2.data))
+          history.replace(`/wizard/${route}/${currentLevel}/conclusion`)
+          sessionStorage.removeItem('rememContinued')
         }}
           duration={counter} text='FINISH'
           />

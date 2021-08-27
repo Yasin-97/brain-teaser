@@ -10,10 +10,12 @@ import styles from "./css/main.min.module.css";
 import img from "./assets/img/pexels-andre-moura-4021521.jpg";
 
 export default function BrainTeaser() {
+  // const location =useLocation()
+  console.log('location');
   return (
     <div
       className={`${styles.mainPage} ${styles.d_flex} ${styles.justifyContent_center}`}
-    >
+      >
       <div className={styles.background_container}>
         <img src={img} />
       </div>
@@ -22,7 +24,8 @@ export default function BrainTeaser() {
         <Switch>
           <Route exact path="/" component={Intro} />
           <Route exact path="/difficulty-specify" component={Difficulty} />
-          <Route exact path="/wizard/:difficulty" component={Wizard} />
+          {/* <Route exact path="/wizard/:diffy" component={Wizard} /> */}
+          <Route exact path="/wizard/:diff/:lll/:lk" component={Wizard} />
           <Route
             exact
             path="/overall-conclusion"
