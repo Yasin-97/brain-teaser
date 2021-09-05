@@ -5,54 +5,42 @@ import { useDataContext } from "../context/Context";
 import Card from './Card'
 import styles from '../css/main.min.module.css'
 import Button from "./Button";
+import Loading from '../components/Loading'
 
 export default function MemorizeSession() {
+  //context
+  const {phase,words,currentLevel,dispathcSessionStorage,memoTimeSaver}=useDataContext()
+  const {route,levels}=phase
+console.log('from memo',words);
 const history=useHistory()
 //get session storaged time
-const memoContinued=JSON.parse(sessionStorage.getItem('memoContinued'))
-// const memoContinued=JSON.parse(sessionStorage.getItem('memoContinued'))
-
-
-
-   //context
-   const {phase,words,currentLevel,renderMemo,renderOverlay,memoTimeSaver}=useDataContext()
-   const {route,levels}=phase
+const memoContinued=dispathcSessionStorage({
+  type:"GET_ITEM",
+  payload:{
+    item:'memoContinued'
+  }
+}) 
 
    //state
     const [counter, setCounter] = useState(memoContinued?memoContinued:levels[currentLevel].memoDuration);
 
     //effects
-// useEffect(()=>{
-// //chunk the url, add current level num and the componente's path, concat the url
-//   const updated=pathname.split('/')
-//   const concated=updated.reduce((acc,cur,index)=>{
-//     if(index===3)cur=currentLevel
-//     if(index===4)cur='memo'
-//     return acc.concat(`/${cur}`)  
-//   })
-//   history.replace(concated)
-// },[currentLevel])
-
-
 useEffect(() => {
   let timer;
-      if (counter > 0){ timer=setTimeout(() =>{
+  dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'memoSavedTime', value:counter }})
+   dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'memoContinued', value:counter }})
+      if(words){if (counter > 0){ timer=setTimeout(() =>{
       setCounter((prev) => prev - 1)}, 1000)
-      sessionStorage.setItem('memoContinued',JSON.stringify(counter))
     }
       else {
         memoTimeSaver(counter)
-          renderMemo(false)
-          renderOverlay(true)
           history.replace(`/wizard/${route}/${currentLevel}/overlay`)
-          sessionStorage.removeItem('memoContinued')
-        }
+          dispathcSessionStorage({type:'REMOVE',payload:{item:'memoContinued'}})
+        }}
         return ()=>clearTimeout(timer)
-  }, [counter]);
+  }, [counter,words]);
 
-  
-
-
+console.log('commming from memo',words);
     return (
          <Card
    className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center} ${styles.justifyContent_around}`}
@@ -60,22 +48,26 @@ useEffect(() => {
         <div>
         <h1 className={styles.wizard_memo_header}>Remember the order</h1>  
              <div className={styles.wizard_memo_collection}>
-             {words.map(({id,word})=> <p className={styles.wizard_memo_word} key={id}>{word}</p>)}
+             {!words?<Loading />:words.map(({id,word})=> <p className={styles.wizard_memo_word} key={id}>{word}</p>)}
             
         </div>
         </div> 
          <div>
-        <Button className={styles.wizard_Btn}
+        <Button className={styles.wizard_memo_btn} 
+        disabled={!words&&true}
         onClick={()=>{
-          
              memoTimeSaver(counter) 
-             renderMemo(false)
-             renderOverlay(true)
              history.replace(`/wizard/${route}/${currentLevel}/overlay`)
-             sessionStorage.removeItem('memoContinued')
+             dispathcSessionStorage({
+              type:'SET_ITEM',
+              payload:{
+                item:'memoSavedTime',
+                value:counter
+              }
+            })
+             dispathcSessionStorage({type:'REMOVE',payload:{item:'memoContinued'}})
             }}
          duration={counter} text ={'FINISH'}
-         
          />
         </div>
         </Card> 

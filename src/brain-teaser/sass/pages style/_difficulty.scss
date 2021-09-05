@@ -1,40 +1,26 @@
 
 .header_text{
-    // color: #e523ff;
-    font-size: 3rem;
+    @include header;
     letter-spacing: 1px;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    // margin-top: 1.5rem;
+    margin-bottom: 5rem;
+    // min-height: 10rem;
 }
 
 .levels{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     min-height: 55%;
 }
 
-.level_Btn{   
-    width: 20rem;
-    height: 5rem;
-    text-transform: uppercase;
-    font-size: 1.2rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    background-color: transparent;
-    background-color:#e523ff85 ;
-    border: none;
-    color: white;
-    transition: all .3s ease-in-out;
-    &:hover{
-        border: none;
-        background-color:#e523ffbb ;
-        transform: scale(1.05,1.05);
-    }
+.diff_level_btn{   
+    @include action_Btn;
+    // color: darkgoldenrod;
 }
 .start_Game_Btn{
-    background: #e523ff;
-    padding: .8rem 4rem;
-    font-weight: bold;
-    margin: 1rem 0;
+    // background: #e523ff;
+    // padding: .8rem 4rem;
+    // font-weight: bold;
+    // margin: 1rem 0;
 }

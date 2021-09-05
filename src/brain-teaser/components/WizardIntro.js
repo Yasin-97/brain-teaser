@@ -7,8 +7,8 @@ import styles from '../css/main.min.module.css'
 
 export default function WizardIntro() {
     const history=useHistory()
-   const {phase,currentLevel,renderIntro,renderMemo}=useDataContext()
-
+   const {phase,currentLevel,sessionStorageState,dispathcSessionStorage}=useDataContext()
+   
    const {route,introDescription}=phase
 //    useEffect(()=>{history.push(`memo`)},[])
     return (
@@ -19,13 +19,10 @@ export default function WizardIntro() {
         <h2 className={styles.wizard_intro_header}>just an introduction</h2>
         <p className={styles.wizard_intro_text}> {introDescription} In the given time try to memorize the words and its order.
         </p>
-        <Button className={styles.wizard_Btn} onClick={()=>{
-              history.replace(`/wizard/${route}/${currentLevel}/memo`)
-            renderMemo(true)
-            renderIntro(false)
-            
-            }} text={'GET GOING'}/>
                  </div>
+        <Button className={styles.wizard_intro_btn} onClick={()=>{
+              history.replace(`/wizard/${route}/${currentLevel}/memo`)
+            }} text={'GET GOING'}/>
                     
                 </Card>
     )

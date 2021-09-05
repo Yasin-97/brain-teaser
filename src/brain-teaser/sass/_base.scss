@@ -1,32 +1,138 @@
-.d_flex{
-    display: flex;
-}
-.justifyContent_center{
-justify-content: center;
-}
-.justifyContent_around{
-    justify-content: space-around;
-    }
+//variable
+$purple_color: #ff00bf;
+$light_color: #ffffff;
 
-.alignItems_center{
-flex-direction: column;
-align-items: center;
-}
-// .alignItems_around{
-//     flex-direction: column;
-//     align-items:center
-//     }
+$header_font_size: 2rem;
+$desc_font_size: 1.15rem;
 
-.page{
-    position: relative;
-    padding: 1.9rem;
-    width:100% ;
-max-width: 500px;
+//mixins
+@mixin header {
+  text-transform: capitalize;
+  font-size: $header_font_size;
+  color: $light-color;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+@mixin text {
+  font-size: $desc_font_size;
+  color: darken($light_color, 25);
+  padding: 0 1rem;
 }
 
-.header{
-   
-    margin-top:5rem;
-    text-align: center;
-   
+@mixin action_Btn {
+  background: darken($purple_color, 20);
+  color: $light-color;
+  margin: 1.5rem;
+  padding: 1.2rem 4.5rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  border: none;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    background: darken($purple_color, 16);
+    color: $light-color;
+  }
+}
+
+@font-face {
+  font-family: "MontserratAlternates-Light";
+  src: url("../assets/font/MontserratAlternates-Light.ttf");
+}
+
+.d_flex {
+  display: flex;
+}
+.justifyContent_center {
+  justify-content: center;
+}
+.justifyContent_around {
+  justify-content: space-around;
+}
+
+.alignItems_center {
+  flex-direction: column;
+  align-items: center;
+}
+
+.page {
+  position: relative;
+  padding: 1.9rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.header {
+  margin-top: 5rem;
+  text-align: center;
+}
+
+.onWait_state{
+
+}
+.onWait_btn{
+// background: darkgray !important;
+background: darken($purple_color, 40) !important;
+}
+
+
+.offline_message{
+  position: fixed;
+ 
+  max-height: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: .3rem;
+  background-color: #FF8A65;
+  color: #37474F;
+  font-size: .9rem;
+  font-weight: 500;
+  overflow: hidden;
+  transition: all .2s ease-in-out;
+  &_btn{
+    align-self: flex-end;
+    background: darken($light_color, 30);
+  color:#37474F;
+  margin:  0 .3rem;
+  padding: .45rem 1.4rem;
+  text-transform: uppercase;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 0.3rem;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    background: darken($light_color, 34);
+    color: #37474F;
+  }
+  }
+  &_show{
+    max-height: 7rem;
+    margin: .5rem;
+    padding: .5rem;
+  }
+}
+
+
+
+.danger_text{
+  border: #FBE9E7 1px solid;
+  border-radius: .3rem;
+  background-color: #FFAB91;
+  color: #37474F;
+  padding: 1rem;
+  font-weight: 500;
+}
+.warning_text{
+  border-radius: .3rem;
+  background-color:#FBC02D;
+  color: #37474F;
+  padding: 1rem;
+  font-weight: 500;
 }

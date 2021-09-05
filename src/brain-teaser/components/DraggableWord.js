@@ -16,7 +16,7 @@ flex-grow: 1;
    font-weight: bold;
    letter-spacing: 1px;
    box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 0.425);
-   background-color: ${props => (props.isDragging ? 'lightGreen' : 'transparent')};
+   background-color: ${props => (props.isDragging ? 'hsl(315, 100%, 50%)' : 'transparent')};
 `;
 export default function DraggableWord({id,wordNumber,word,index}) {
 

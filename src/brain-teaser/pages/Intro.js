@@ -1,17 +1,25 @@
-import React from "react";
+import React,{useState} from "react";
 import {Link} from 'react-router-dom'
+import { useDataContext } from "../context/Context";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import Loading from "../components/Loading";
 import styles from "../css/main.min.module.css";
 
 export default function Intro() {
+//context
+const {isOnline,setInternetConnection}=useDataContext()
   return (
     <Card
       className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center}`}
     >
+      {!isOnline&&<div className={`${styles.offline_message} ${!isOnline&&styles.offline_message_show}`}>
+      <p >You probably are't connected to internet! please check it out.</p>
+<button className={styles.offline_message_btn} onClick={()=>setInternetConnection(true)}>Ok</button>
+      </div>}
       <div className={styles.header}>
         <h1 className={styles.welcome}>Welocme </h1>
-        <h1>To</h1>
+        <h1 className={styles.to}>To</h1>
         <h1 className={styles.game_name}>Memo Order</h1>
       </div>
       <div className={styles.desc}>
@@ -21,8 +29,8 @@ export default function Intro() {
           in the given time.  
         </p>
       </div>
-      <Link to="/difficulty-specify">
-      <Button className={styles.action_Btn} text={'GET GOING'}/>
+      <Link to="/difficulty-specify" className={styles.intro_btn} onClick={()=>setInternetConnection(true)}>
+      GET GOING
       </Link>
     </Card>
   );

@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Link,useParams,useLocation,useRouteMatch,withRouter,useMa} from 'react-router-dom'
+import {Link,useHistory} from 'react-router-dom'
 import {
   novice,
   intermediate,
@@ -13,15 +13,24 @@ import Button  from '../components/Button'
 export default function Difficulty() {
 
   //context  
-    const {getPhaseDifficulty,currentLevel} =useDataContext()
-    
+    const {getPhaseDifficulty,currentLevel,dispathcSessionStorage,cleanUpState} =useDataContext()
+    //router
+    const history=useHistory()
     //effects
-    // useEffect(()=>sessionStorage.clear(),[])
+    useEffect(()=>cleanUpState(),[])
     
     //function
     const dataSaver=(diff)=>{
       getPhaseDifficulty(diff)
-      sessionStorage.setItem('phase',JSON.stringify(diff))
+
+      dispathcSessionStorage({
+        type:'SET_ITEM',
+        payload:{
+          item:'phase',
+          value:diff
+        }
+      })
+      // sessionStorage.setItem('phase',JSON.stringify(diff))
     }    
 
     
@@ -33,18 +42,24 @@ export default function Difficulty() {
        <h1 className={styles.header_text}>Difficulty Level</h1>
        </div>
 <div className={styles.levels}>
-<Link to={`/wizard/novice/${currentLevel}/intro`}>
-    <Button className={styles.level_Btn} onClick={()=>dataSaver(novice)} text={'novice'}></Button>
-    </Link>
-    <Link to={`/wizard/intermediate/${currentLevel}/intro`}>
-    <Button className={styles.level_Btn} onClick={()=>dataSaver(intermediate)} text={'intermediate'}></Button>
-    </Link>
-    <Link to={`/wizard/expert/${currentLevel}/intro`}>
-    <Button className={styles.level_Btn} onClick={()=>dataSaver(expert)} text={'expert'}></Button>
-    </Link>
+
+    <Button className={styles.diff_level_btn} onClick={()=>{
+      dataSaver(novice)
+      history.push(`/wizard/novice/${currentLevel}/intro`)
+      }} text={'novice'}/>
+
+    <Button className={styles.diff_level_btn} onClick={()=>{
+       history.push(`/wizard/intermediate/${currentLevel}/intro`)
+      dataSaver(intermediate)
+      }} text={'intermediate'}/>
+
+    <Button className={styles.diff_level_btn} onClick={()=>{
+       history.push(`/wizard/expert/${currentLevel}/intro`)
+      dataSaver(expert)
+      }} text={'expert'}/>
+
     </div>
         </Card>
     )
 }
 
-// export default withRouter(Difficulty);

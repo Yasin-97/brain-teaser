@@ -1,7 +1,8 @@
-import React, { useState,useEffect } from "react";
-import {Route, Switch,useHistory,useLocation} from "react-router-dom";
+import React, { useEffect } from "react";
+import {Route,useHistory,useLocation} from "react-router-dom";
 import { useDataContext } from "../context/Context";
 //components
+import PrivateRoute from '../components/PrivateRoute'
 import WizardIntro from "../components/WizardIntro";
 import RememberSession from "../components/RememberSession";
 import MemorizeSession from "../components/MemorizeSession";
@@ -10,89 +11,57 @@ import Overlay from "../components/Overlay";
 
 
 export default function Wizard() {
-
   //router
   const history=useHistory()
   const location=useLocation()
  
-
-
 //context
 const {
   dispathcSessionStorage,
-  sesstionStorageState,
+  sessionStorageState,
   phase,
+  words,
   currentLevel,
 }=useDataContext()
 
 //effects
 //set then get the current path to redirect to the same component, in the case user update or refresh the page
 
-useEffect(()=>sessionStorage.setItem('currentPath',JSON.stringify(location.pathname)),[location.pathname])
-useEffect(()=>history.replace(JSON.parse(sessionStorage.getItem('currentPath'))),[location.pathname])
-console.log(location.pathname);
 // useEffect(()=>{
-//   dispathcSessionStorage({
-//     type:'SET_ITEM',
-//     payload:{
-//       item:'currentPath',
-//       value:location.pathname
-//     }
-//   })
+// sessionStorage.setItem('currentPath',JSON.stringify(location.pathname))
+// history.replace(JSON.parse(sessionStorage.getItem('currentPath')))
+// }
+// ,[location.pathname])
 
-// dispathcSessionStorage({
-//   type:"GET_ITEM",
-//   payload:{
-//     item:'currentPath',
-//   }
-// })
 
+// const lastLevel=JSON.parse(sessionStorage.getItem('last level'))
+
+
+// useEffect(()=>{
+//set current path to back to the same componet/page on page refresh
+  // dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'currentPath', value:location.pathname }})
+
+  // const path=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'currentPath' }})
+  
+  //  history.replace(path)
 // }
 // ,[location.pathname])
 
 
 
-
-  // if (isRenderIntro) history.push('/wizard/novice/0/intro')
-    // return (
-      // <WizardIntro />
-      // history.push('/wizard/novice/0/intro')
-    // );
-  // else {
-  //   if (isRenderMemo){
-  //     // return (
-  //       history.push('/wizard/novice/0/memo')
-  //       // <Route path={`/wizard/best`} render={() => <MemorizeSession />} />
-  //       // <MemorizeSession />
-  //     // );
-  //   }
-  //   else {
-  //     if (isRenderOverlay) {
-  //       history.push('/wizard/novice/0/overlay')
-  //       // return (
-  //       //   <Overlay />
-  //       // );
-  //     } else {
-  //       if (isRenderRemem) {
-  //         history.push('/wizard/novice/0/remem')
-  //         // return (
-  //         //   <RememberSession />
-  //         // );
-  //       }
-  //       history.push('/wizard/novice/0/conclusion')
-  //       // return (
-  //       //   <Conclusion />
-  //       // );
-  //     }
-  //   }
-  // } 
   return (
     <React.Fragment>
-    <Route path={`/wizard/${phase.route}/${currentLevel}/intro`} render={() => <WizardIntro />} />
+     {/* <Route path={`/wizard/${phase.route}/${currentLevel}/intro`} render={() => <WizardIntro />} />
     <Route path={`/wizard/${phase.route}/${currentLevel}/memo`} render={() => <MemorizeSession />} />
     <Route path={`/wizard/${phase.route}/${currentLevel}/overlay`} render={() => <Overlay />} />
     <Route path={`/wizard/${phase.route}/${currentLevel}/remem`} render={() => <RememberSession />} />
-    <Route path={`/wizard/${phase.route}/${currentLevel}/conclusion`} render={() => <Conclusion />} />
+    <Route path={`/wizard/${phase.route}/${currentLevel}/conclusion`} render={() => <Conclusion />} />  */}
+     <PrivateRoute path={`/wizard/${phase.route}/${currentLevel}/intro`} component={WizardIntro} />
+     <PrivateRoute path={`/wizard/${phase.route}/${currentLevel}/memo`} component={MemorizeSession} />
+     <PrivateRoute path={`/wizard/${phase.route}/${currentLevel}/overlay`} component={Overlay} />
+     <PrivateRoute path={`/wizard/${phase.route}/${currentLevel}/remem`} component={RememberSession} />
+     <PrivateRoute path={`/wizard/${phase.route}/${currentLevel}/conclusion`} component={Conclusion} />
+    
     </React.Fragment>
   )
 }

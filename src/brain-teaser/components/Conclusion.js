@@ -1,82 +1,131 @@
-import React,{useState,useEffect} from 'react'
-import { useHistory } from "react-router-dom"
-import { useDataContext } from '../context/Context'
-import Button from './Button'
-import Card from './Card'
-import styles from '../css/main.min.module.css'
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useDataContext } from "../context/Context";
+import Button from "./Button";
+import Card from "./Card";
+import styles from "../css/main.min.module.css";
 
 export default function Conclusion() {
-    //router
-    const history=useHistory()
-    
-    //context
-    const {phase,currentLevel, rememSavedTime,levelPoints, setNextLevel,renderIntro,renderMemo,renderConclusion}=useDataContext()
-    const {route}=phase
-    //destruction
-    const {exactitude,point}=levelPoints
+  
+  //context
+  const { phase, currentLevel,  clearWords, setNextLevel,dispathcSessionStorage } = useDataContext();//levelPoints
+  const { route, levels } = phase;
+  
+  //state
+  const [isLastLevel]=useState(currentLevel + 1 === levels.length)
+  
+        //session storage
+        const levelPoints=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'currentLevelPoints' } })
+        const currentSavedTime=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'currentSavedTime' } })
+        const overallPoints=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'overallPoints' } })
+        const overallSavedTime=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'overallSavedTime' } })
+  
+      //effect
+    useEffect(() => {
+      
+      // {
+      //   if (!overallPoints) dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallPoints', value:levelPoints }})
+      //   else {
+      //     const [newGainedPoint, newTotalPoint] = overallPoints.point.split("/");
+      //     const [lastGainedPoint, lastTotalPoint] = levelPoints.point.split("/");
+      //     const GainedPoint = +newGainedPoint + +lastGainedPoint;
+      //     const TotalPoint = +newTotalPoint + +lastTotalPoint;
+      //     dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallPoints',value:{
+      //           exactitude: ((GainedPoint / TotalPoint) * 100).toFixed(),
+      //           point: GainedPoint + "/" + TotalPoint,
+      //         }}})
+      //   }
+      // }
 
-    //effect
-    // useEffect(()=>{history.push(`conclusion`)},[])
-    
-    
+      // {
+      // if (!overallSavedTime) dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallSavedTime', value:rememSavedTime }})
+      // else dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallSavedTime', value:overallSavedTime + rememSavedTime }})
+      // }
+      
+    }, []);
 
-useEffect(()=>{
-    //session storage
-// {if(!sessionStorage.getItem('phase')){
-//     sessionStorage.setItem('phase',JSON.stringify(phase.difficulty))
-// }
-// else if(sessionStorage.getItem('phase')){
-//     const savedPhase=JSON.stringify(sessionStorage.getItem('phase'))
-//     savedPhase!==phase.difficulty&&sessionStorage.setItem('phase',JSON.stringify(phase.difficulty))
-// }}
-
-   {
-        if(sessionStorage.getItem('overall saved time')){
-    const lastSavedTime=JSON.parse(sessionStorage.getItem('overall saved time'))
-    sessionStorage.setItem('overall saved time',JSON.stringify((+lastSavedTime)+(+rememSavedTime)))
-}
-else sessionStorage.setItem('overall saved time',JSON.stringify(rememSavedTime))
-}
-
-{
-        if(sessionStorage.getItem('overall point')){
-        const lastOverallPoint=sessionStorage.getItem('overall point')
-                const[newGainedPoint,newTotalPoint]=point.split('/')
-                const[lastGainedPoint,lastTotalPoint]=JSON.parse(lastOverallPoint).split('/')
-                sessionStorage.setItem('overall point',JSON.stringify((+lastGainedPoint + +newGainedPoint)+'/'+(+lastTotalPoint + +newTotalPoint)))
+    const setOverallData=()=>{
+      {
+        if (!overallPoints) dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallPoints', value:levelPoints }})
+        else {
+          const [newGainedPoint, newTotalPoint] = overallPoints.point.split("/");
+          const [lastGainedPoint, lastTotalPoint] = levelPoints.point.split("/");
+          const GainedPoint = +newGainedPoint + +lastGainedPoint;
+          const TotalPoint = +newTotalPoint + +lastTotalPoint;
+          dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallPoints',value:{
+                exactitude: ((GainedPoint / TotalPoint) * 100).toFixed(),
+                point: GainedPoint + "/" + TotalPoint,
+              }}})
         }
-else sessionStorage.setItem('overall point',JSON.stringify(point))
-}
+      }
 
-sessionStorage.setItem('last level',JSON.stringify(currentLevel))
-},[])
-    return (
-        <Card 
-        className={`${styles.page} ${styles.d_flex} ${styles.justifyContent_around} ${styles.alignItems_center}`}
-      >
-           <div className={styles.conclusion_level}><h2>Level {currentLevel+1}</h2></div>
-           <div className={styles.conclusion_levelDetails}>
-               <div className={styles.conclusion_levelDetail}><b>Saved time : </b><span>{rememSavedTime} sec</span></div>
-               <div className={styles.conclusion_levelDetail}><b>Exactitude : </b><span>{exactitude}%</span></div>
-               <div className={styles.conclusion_levelDetail}><b>Point : </b><span>{point}</span></div>
-               <div  className={styles.conclusion_stars}><b>* * * * * </b></div>
-           </div>
-           <div className={styles.conclusion_action_btns}>
-               <Button className={styles.conclusion_nextLevel_btn} onClick={()=>{
+      {
+      if (!overallSavedTime) dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallSavedTime', value:currentSavedTime }})
+      else dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallSavedTime', value:overallSavedTime + currentSavedTime }})
+      }
+    }
+
+    //router
+  const history = useHistory();
+
+  //session storage
+  // const currentLevelPoints=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'currentLevelPoints' } })
+  // const currentSavedTime=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'currentSavedTime' } })
+  
+  //destruction
+  const SavedTime = currentSavedTime;
+  const exactitude =  levelPoints.exactitude// : currentLevelPoints.exactitude;
+  const point =  levelPoints.point// : currentLevelPoints.point;
+
+
+  return (
+    <Card
+      className={`${styles.page} ${styles.d_flex} ${styles.justifyContent_around} ${styles.alignItems_center}`}
+    >
+      <div className={styles.conclusion_level}>
+        <h2>Level {currentLevel + 1}</h2>
+      </div>
+      <div className={styles.conclusion_levelDetails}>
+        <div className={styles.conclusion_levelDetail}>
+          <b>Saved time : </b>
+          <span className={styles.conclusion_detail_value}>{SavedTime} sec</span>
+        </div>
+        <div className={styles.conclusion_levelDetail}>
+          <b>Exactitude : </b>
+          <span className={styles.conclusion_detail_value}>{exactitude}%</span>
+        </div>
+        <div className={styles.conclusion_levelDetail}>
+          <b>Point : </b>
+          <span className={styles.conclusion_detail_value}>{point}</span>
+        </div>
+      </div>
+      <div className={styles.conclusion_action_btns}>
+        <Button
+          className={styles.conclusion_nextLevel_btn}
+          onClick={() => {
+            setOverallData()
+            if(isLastLevel) history.replace('/overall-conclusion')
+           else {
+            dispathcSessionStorage({ type:"SET_ITEM", payload:{ item:'words',value:null}})
                 setNextLevel()
-                renderMemo(true)
-                renderConclusion(false)
-                history.replace(`/wizard/${route}/${currentLevel+1}/memo`)
-               }
-                } text={'Next Level'}/>
-               <Button className={styles.conclusion_quit_btn} onClick={()=>{ 
-                   renderIntro(true)
-                renderConclusion(false)
-                sessionStorage.clear()
-                history.replace('/')
-                   }} text={'QUIT'}/>
-           </div>
-            
-        </Card>
-    )
+                history.replace(`/wizard/${route}/${currentLevel + 1}/memo`)
+          }
+            dispathcSessionStorage({ type:"REMOVE", payload:{ item:'currentLevelPoints'}})
+            dispathcSessionStorage({ type:"REMOVE", payload:{ item:'currentSavedTime'}})
+            dispathcSessionStorage({ type:"REMOVE", payload:{ item:'words'}})
+            clearWords()
+          }}
+          text={isLastLevel ? "conclusion" : "Next Level"}
+        />
+        <Button
+          className={styles.conclusion_quit_btn}
+          onClick={() => {
+            dispathcSessionStorage({ type:"CLEAR"})
+            history.replace("/");
+          }}
+          text={"QUIT"}
+        />
+      </div>
+    </Card>
+  );
 }

@@ -8,12 +8,14 @@
 }
 
 .mainPage{
+    // display: none;
     background-color: #000015;
     width: 100%;
     min-height: 100vh;
 }
 
 .background_container{
+    display: none;
     position: fixed; 
     top: -50%; 
     left: -50%; 

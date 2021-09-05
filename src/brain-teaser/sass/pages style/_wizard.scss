@@ -1,29 +1,29 @@
-.simple_intro{
-    display: flex;
-    flex-direction: column;
+// .simple_intro{
+//     // display: flex;
+//     // flex-direction: column;
    
-}
+// }
 .wizard_header_text{
     // margin-left: -.5rem;
-    text-align: center;
-    letter-spacing: 1px;
-text-transform: capitalize;
-    color: rgb(221, 221, 221);
-margin-bottom: 2rem;
-font-weight: bold;
+    // text-align: center;
+    // letter-spacing: 1px;
+// text-transform: capitalize;
+    // color:red;
+// margin-bottom: 2rem;
+// font-weight: bold;
 }
-.timer{
-font-size: 2rem;
-letter-spacing: 5px;
-color: rgb(0, 119, 255);
-margin-bottom:1.5rem ;
-}
-.simple_intro_text{
-    line-height: 2.1rem;
-}
+// .timer{
+// font-size: 2rem;
+// letter-spacing: 5px;
+// color: rgb(0, 119, 255);
+// margin-bottom:1.5rem ;
+// }
+// .simple_intro_text{
+//     line-height: 2.1rem;
+// }
 .start_Game_Btn{
     // margin-top: 2rem;
-    margin: 2rem auto;
+    // margin: 2rem auto;
 }
 
 .word_Colc{
@@ -54,14 +54,10 @@ width: 100%;
     font-size: 1rem;
     font-weight: 500;
     letter-spacing: 2px;
-    background-color: transparent;
-    background-color:#e523ff85 ;
     border: none;
-    color: white;
+    text-decoration: none;
     transition: all .3s ease-in-out;
     &:hover{
-        border: none;
-        background-color:#e523ffbb ;
         transform: scale(1.01,1.01);
     }
 }

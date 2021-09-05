@@ -1,8 +1,8 @@
 
 .wizard_remem_header{
-    text-align: center;
-    letter-spacing: 1px;
-text-transform: capitalize;
-    color: rgb(170, 170, 170);
-margin-bottom: 1.2rem;
+   @include header;
+}
+
+.wizard_remem_btn{
+    @include action_Btn;
 }

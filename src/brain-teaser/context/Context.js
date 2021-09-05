@@ -1,20 +1,22 @@
 import React, { createContext, useContext, useState,useEffect,useReducer } from "react";
-import {useHistory} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
-import {wordCollection} from '../assets/word data/wordData'
+import {wordAPI,wordCollection} from '../assets/word data/wordData'
 
+const DataContext = createContext();
 
-//redicer function
-const sessionStorageReducer=(state,action)=>{
+export const useDataContext = () => useContext(DataContext);
+
+const DataProvider = ({ children }) => {
+const dispathcSessionStorage=(action)=>{
   const {type,payload}=action
-  const {item,value}=payload
   switch(type){
     case 'SET_ITEM':
-      return(sessionStorage.setItem(item,JSON.stringify(value)))
+      return(sessionStorage.setItem(payload.item,JSON.stringify(payload.value)))
       case 'GET_ITEM':
-        return(JSON.parse(sessionStorage.getItem(item)))
+        return JSON.parse(sessionStorage.getItem(payload.item))
       case 'REMOVE':
-        return(sessionStorage.removeItem(item))
+        return(sessionStorage.removeItem(payload.item))
       case 'CLEAR':
         return(sessionStorage.clear())
 
@@ -25,74 +27,69 @@ const sessionStorageReducer=(state,action)=>{
 
 
 
-
-const DataContext = createContext();
-
-export const useDataContext = () => useContext(DataContext);
-
-const DataProvider = ({ children }) => {
-//reducer
-const [sesstionStorageState,dispathcSessionStorage]= useReducer(sessionStorageReducer, {item:'',value:''})
-
-
+const sotragePhase=JSON.parse(sessionStorage.getItem('phase'))
+const storagewords=JSON.parse(sessionStorage.getItem('words'))
+const storageCurrentLevel= JSON.parse(sessionStorage.getItem('currentLevel'))
+const storageMemoSavedTime=JSON.parse(sessionStorage.getItem('memoSavedTime'))
+const storageRememSavedTime=JSON.parse(sessionStorage.getItem('rememSavedTime'))
   //state
-  const [phase, setPhase] = useState(JSON.parse(sessionStorage.getItem('phase')));
-  const [currentLevel, setCurrentLevel] = useState(0)
-  const [words,setWords]=useState(JSON.parse(sessionStorage.getItem('words')))
-  const [isRenderIntro, setisRenderIntro]=useState(true)
-  const [isRenderMemo, setIsRenderMemo]=useState(false)
-  const [isRenderOverlay, setIsRenderOverlay]=useState(false)
-  const [isRenderRemem, setIsRenderRemem]=useState(false)
-  const [isRenderConclusion, setIsRenderConclusion]=useState(false)
-  const [memoSavedTime, setMemoSavedTime]=useState()
-  const [rememSavedTime, setRememSavedTime]=useState()
+  const [phase, setPhase] = useState(sotragePhase);
+  const [currentLevel, setCurrentLevel] = useState( storageCurrentLevel || 0)
+  const [words,setWords]=useState( storagewords||null)
+  const [memoSavedTime, setMemoSavedTime]=useState(storageMemoSavedTime)
+  const [rememSavedTime, setRememSavedTime]=useState(storageRememSavedTime)
   const [levelPoints, setLevelPoints] = useState();
+  const [isOnline, setIsOnline] = useState(true);
   
-  // const [introDescription,setIntroDescription]=useState()
-  // const [memoDuration,setMemoDuration]=useState()
-  // const [rememDuration,setRememDuration]=useState()
-
-  //effects
- 
-// console.log(phase);
-// useEffect(()=>{
-// const savedPhase=JSON.parse(sessionStorage.getItem('phase'))
-// console.log(savedPhase);
-// savedPhase&&setPhase(savedPhase)
-// },[])
-
+  // console.log('phase',phase);
+  console.log('currentLevel',currentLevel);
+  console.log('words',words);
+  // console.log('memosavedTime',memoSavedTime);
+  // console.log('rememSavedTime',reme/mSavedTime);
+  // console.log('levelPoints',levelPoints);
 useEffect(()=>{
-  let words;
-  if(phase){
-words=shuffle(wordCollection,phase.levels[currentLevel].wordCollection);
-console.log(words);
-    setWords(words);
-  sessionStorage.setItem('words',JSON.stringify(words));
+  console.log('show mee thing of restulet',phase,storagewords);
+  if(phase&&storagewords==null){
+    console.log('this ran now');
+    const levelWords=[]
+    const checkNET=navigator.onLine
+    new Promise((res,rej)=>{
+      if(checkNET){
+        console.log('runnign with',phase,currentLevel,phase.levels[currentLevel].wordCollection);
+        for(let i=0;i<phase.levels[currentLevel].wordCollection;i++){
+      res(levelWords.push(wordAPI().then(res=>res[0].word)))
+    }
+  }
+    else rej(setInternetConnection(false),console.log('this request rejected'))
+    
+  }
+  )
+
+
+
+Promise.all(levelWords).then(res=>{
+  const iterate=res.map((w,i)=>{return{id:i.toString(),word:w}});
+  setWords(iterate)
+  dispathcSessionStorage({type:"SET_ITEM",payload:{item:'words',value:iterate}})
+}).catch(err=>console.log(err))
   }
   },[phase,currentLevel])
 
-  //function
 
+  //function
   const getPhaseDifficulty = (diff) => setPhase(diff)
-  const renderIntro=(bool)=>setisRenderIntro(bool)
-  const renderMemo=(bool)=>setIsRenderMemo(bool)
-  const renderOverlay=(bool)=>setIsRenderOverlay(bool)
-  const renderRemem=(bool)=>setIsRenderRemem(bool)
-  const renderConclusion=(bool)=>setIsRenderConclusion(bool)
+  const clearWords=()=>setWords(null)
   const memoTimeSaver=(time)=>setMemoSavedTime(time)
   const rememTimeSaver=(time)=>setRememSavedTime(time)
-  const setNextLevel = () => {
-  const lastLevel=parseInt(sessionStorage.getItem('last level'))
-      setCurrentLevel(lastLevel + 1)
-  };
-
-
   const getLevelPoints = (points) => setLevelPoints(points);
-
+  const setInternetConnection = (bool) => setIsOnline(bool);
+  const setNextLevel = () => {
+    setCurrentLevel(pre=>pre+1)
+    sessionStorage.setItem('currentLevel',JSON.stringify(currentLevel+1))
+  };
   function shuffle(array,num) {
     let currentIndex = array.length;
     let randomIndex;
-    let newArr=[];
     while (currentIndex != 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
@@ -104,7 +101,6 @@ console.log(words);
     
     return array.slice(0,num)
   }
-
   const arraySimilarity = (arr1, arr2) => {
     const inCommon = [];
     for (let i = 0; i < arr1.length; i++) {
@@ -116,6 +112,17 @@ console.log(words);
     };
   };
 
+  const cleanUpState=()=>{
+    setPhase(null)
+    setWords(null)
+    dispathcSessionStorage({type:'CLEAR'})
+    setCurrentLevel(0)
+    setLevelPoints(null)
+    setMemoSavedTime(null)
+    setRememSavedTime(null)
+
+  }
+
 
 
 
@@ -123,25 +130,18 @@ console.log(words);
     //states
     words,
     phase,
-    isRenderIntro,
-    isRenderMemo,
-    isRenderOverlay,
-    isRenderRemem,
-    isRenderConclusion,
     memoSavedTime,
     rememSavedTime,
     currentLevel,
     levelPoints,
-    sesstionStorageState,
+    isOnline,
 
     //functions
+    cleanUpState,
+    clearWords,
+    setInternetConnection,
     dispathcSessionStorage,
     getPhaseDifficulty,
-    renderIntro,
-    renderMemo,
-    renderOverlay,
-    renderRemem,
-    renderConclusion,
     memoTimeSaver,
     rememTimeSaver,
     getLevelPoints,

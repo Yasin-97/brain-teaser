@@ -13,7 +13,7 @@ const Container =styled.div`
     box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 0.7);
 min-height: 150px;
 justify-content: center;
-background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'transparent')};
+background-color: ${props => (props.isDraggingOver ? 'rgba(255,255,255,0.1)' : 'transparent')};
 `;
 
 export default function DroppableContainer({isDraggedOver,id,children}) {

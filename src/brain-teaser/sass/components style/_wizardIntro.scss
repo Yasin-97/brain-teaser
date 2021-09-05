@@ -4,16 +4,16 @@
 }
 
 .wizard_intro_header{
-    text-align: center;
-    letter-spacing: 1px;
-text-transform: capitalize;
-    color: rgb(221, 221, 221);
+    @include header;
 margin-bottom: 2rem;
-font-weight: bold;
 }
 .wizard_intro_text{
-    line-height: 2.1rem;
+    @include text;
 }
-.wizard_Btn{
-    margin: 2rem auto;
+.wizard_intro_btn{
+
+    @include action_Btn;
+    // background: darken($purple_color, 20);
+    // color: $light-color;
+    // margin: 2rem auto;
 }
