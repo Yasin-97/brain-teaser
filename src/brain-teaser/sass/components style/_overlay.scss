@@ -2,27 +2,13 @@
 .overlay_content{
     display: flex;
     flex-direction: column;
-    // align-items: center;
-    // color: whitesmoke;
-    // background: red;
-// width: 90%;
-// max-width: 28rem;
-// padding: 1.5rem;
 }
 .overlay_header{
     @include header;
-
-// color: #dbdbdb;
-// font-size: 1.5rem;
-// margin-bottom: 1rem;
 }
 
 .overlay_text{
     @include text;
-    // padding: 0 .5rem;
-// font-size: 1.15rem;
-// font-weight: 400;
-// color: darken($color: #dbdbdb, $amount: 10);
 }
 .overlay_sec{
 color: $light-color;

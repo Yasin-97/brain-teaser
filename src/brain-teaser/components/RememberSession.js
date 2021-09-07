@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
 import { useDataContext } from "../context/Context";
 import Button from "./Button";
@@ -13,8 +13,18 @@ import styles from "../css/main.min.module.css";
 
 
 export default function RememberSession() {
+
   //context
-  const {dispathcSessionStorage}=useDataContext()
+  const {phase,
+    words,
+    currentLevel,
+    rememTimeSaver,
+     shuffle,
+     arraySimilarity,
+     dispathcSessionStorage}=useDataContext()
+     const {route,levels}=phase
+
+     //route
 const history=useHistory()
 
 //get session storaged time
@@ -25,25 +35,13 @@ dispathcSessionStorage({
     item:'rememContinued'
   }
 })
-// JSON.parse(sessionStorage.getItem('rememContinued'))
-  //context
-  const {phase,
-    words,
-    currentLevel,
-    memoSavedTime,
-    renderRemem,
-    renderConclusion,
-    rememTimeSaver,
-     getLevelPoints,
-     shuffle,
-     arraySimilarity
-    }=useDataContext()
-  const {route,levels}=phase
+
+
   //state
     const [columnsData, setColumnsData] = useState({
     column1: {
       id: "column1",
-      data:shuffle([...words],levels[currentLevel].wordCollection.length),//words //...words
+      data:shuffle([...words],levels[currentLevel].wordCollection.length),
         },
     column2: {
       id: "column2",
@@ -56,14 +54,11 @@ dispathcSessionStorage({
       item:'memoSavedTime'
     }
   })
-  // JSON.parse(sessionStorage.getItem('memoSavedTime'))
   const [overDraggedContainer, setOverDraggedContainer] = useState(false);
   const [counter, setCounter] = useState(rememContinued?rememContinued:levels[currentLevel].rememDuration+memoSaveTime);
 
  
  //effect
-//  useEffect(()=>history.push(`remem`),[])
-
 useEffect(() => {
   let timer;
   dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'rememContinued', value:counter }})
@@ -72,9 +67,7 @@ useEffect(() => {
       setCounter((prev) => prev - 1)}, 1000)
     }
       else{
-        console.log(counter);
         rememTimeSaver(counter)
-        // getLevelPoints(arraySimilarity(words,columnsData.column2.data))
         dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'currentLevelPoints', value:arraySimilarity(words,columnsData.column2.data) }})
         dispathcSessionStorage({ type:"REMOVE", payload:{ item:'rememContinued'}})
         dispathcSessionStorage({ type:"REMOVE", payload:{ item:'memoSavedTime'}})
@@ -102,17 +95,6 @@ useEffect(() => {
     const finish = columnsData[result.destination.droppableId];
 
     if (start === finish) {
-      // const items = Array.from(columnsData[result.source.droppableId].data);
-      // const [reorderedItem] = items.splice(result.source.index, 1);
-      // items.splice(result.destination.index, 0, reorderedItem);
-
-      // setColumnsData({
-      //   ...columnsData,
-      //   [result.source.droppableId]: {
-      //     ...columnsData[result.source.droppableId],
-      //     data: items,
-      //   },
-      // });
       return;
     }
 
@@ -138,6 +120,15 @@ useEffect(() => {
         data: endMove,
       },
     }));
+  }
+
+  const buttonAction=()=>{
+    rememTimeSaver(counter); 
+    history.replace(`/wizard/${route}/${currentLevel}/conclusion`)
+    dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'currentSavedTime', value:counter }})
+    dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'currentLevelPoints', value:arraySimilarity(words,columnsData.column2.data) }})
+    dispathcSessionStorage({ type:"REMOVE", payload:{ item:'rememContinued'}})
+  dispathcSessionStorage({ type:"REMOVE", payload:{ item:'memoSavedTime'}})
   }
 
   return (
@@ -185,15 +176,7 @@ useEffect(() => {
       </div>
         <Button
          className={styles.wizard_remem_btn}
-         onClick={()=>{ 
-          rememTimeSaver(counter); 
-          history.replace(`/wizard/${route}/${currentLevel}/conclusion`)
-          dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'currentSavedTime', value:counter }})
-          dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'currentLevelPoints', value:arraySimilarity(words,columnsData.column2.data) }})
-          dispathcSessionStorage({ type:"REMOVE", payload:{ item:'rememContinued'}})
-        dispathcSessionStorage({ type:"REMOVE", payload:{ item:'memoSavedTime'}})
-          // getLevelPoints(arraySimilarity(words,columnsData.column2.data))
-        }}
+         onClick={()=>buttonAction()}
         text ={'FINISH'}
         duration={counter}
           />

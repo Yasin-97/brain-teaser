@@ -7,8 +7,10 @@ import Loading from "../components/Loading";
 import styles from "../css/main.min.module.css";
 
 export default function Intro() {
+
 //context
 const {isOnline,setInternetConnection}=useDataContext()
+
   return (
     <Card
       className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center}`}

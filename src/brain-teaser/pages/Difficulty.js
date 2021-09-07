@@ -1,5 +1,5 @@
-import React,{useEffect,useState} from 'react'
-import {Link,useHistory} from 'react-router-dom'
+import React,{useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 import {
   novice,
   intermediate,
@@ -30,7 +30,6 @@ export default function Difficulty() {
           value:diff
         }
       })
-      // sessionStorage.setItem('phase',JSON.stringify(diff))
     }    
 
     

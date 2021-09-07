@@ -14,8 +14,14 @@ export default function OverallConclusion() {
     //session storage
     const savedTime=dispathcSessionStorage({type:'GET_ITEM',payload:{item:'overallSavedTime'}})
     const points=dispathcSessionStorage({type:'GET_ITEM',payload:{item:'overallPoints'}})
-    const {point,exactitude}=points;
-    console.log(savedTime,points);
+    const {point}=points;
+
+    //button action
+    const buttonAction=()=>{
+        cleanUpState()
+        dispathcSessionStorage({type:'CLEAR'})
+        history.replace('/difficulty-specify')
+    }
 
     return (
         <Card 
@@ -27,12 +33,7 @@ export default function OverallConclusion() {
                <div className={styles.conclusion_levelDetail}><b>Point : </b><span className={styles.conclusion_detail_value}>{point}</span></div>
            </div>
            <div className={styles.conclusion_action_btns}>
-               <Button className={styles.conclusion_nextLevel_btn} onClick={()=>{
-                    cleanUpState()
-                    dispathcSessionStorage({type:'CLEAR'})
-                    history.replace('/difficulty-specify')
-               }
-                } text={'start over'}/>
+               <Button className={styles.conclusion_nextLevel_btn} onClick={()=> buttonAction()} text={'start over'}/>
            </div>
             
         </Card>

@@ -26,7 +26,6 @@ export default function DraggableWord({id,wordNumber,word,index}) {
         {(provided,snapshot) =>{
           const {isDragging }=snapshot
           return(
-
         <Word
         ref={provided.innerRef}
         {...provided.draggableProps}

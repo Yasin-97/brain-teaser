@@ -2,9 +2,7 @@
 .header_text{
     @include header;
     letter-spacing: 1px;
-    // margin-top: 1.5rem;
     margin-bottom: 5rem;
-    // min-height: 10rem;
 }
 
 .levels{
@@ -16,11 +14,4 @@
 
 .diff_level_btn{   
     @include action_Btn;
-    // color: darkgoldenrod;
-}
-.start_Game_Btn{
-    // background: #e523ff;
-    // padding: .8rem 4rem;
-    // font-weight: bold;
-    // margin: 1rem 0;
 }

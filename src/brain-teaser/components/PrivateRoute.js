@@ -4,8 +4,6 @@ import { useDataContext } from '../context/Context'
 
 export default function PrivateRoute({component:Component,...rest}){
     const {phase,isOnline}=useDataContext()
-const test=false
-console.log(phase);
     return(
         <Route
             {...rest}

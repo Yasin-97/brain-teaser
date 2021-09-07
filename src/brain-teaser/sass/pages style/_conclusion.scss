@@ -4,7 +4,6 @@
 .conclusion_levelDetails{
     width: 100%;
     padding:1rem 2rem;
-
 }
 .conclusion_levelDetail{
     color: darken($light_color, 25);
@@ -17,17 +16,6 @@
     color: $light_color;
     font-weight: 500;
 }
-// .conclusion_stars{
-//     font-size: 72px;
-//   background: -webkit-linear-gradient(right, rgb(207, 161, 44) 50%, white );
-//   -webkit-background-clip: text;
-//   -webkit-text-fill-color: transparent;
-//     color: goldenrod;
-//     margin-top: 3rem;
-//     display: flex;
-//     // font-size: 2rem;
-//     justify-content: center;
-// }
 .conclusion_action_btns{
     display: flex;
     flex-direction: column;

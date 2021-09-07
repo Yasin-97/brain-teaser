@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import { useHistory } from 'react-router';
 import { useDataContext } from "../context/Context";
 import Button from './Button'
@@ -7,10 +7,9 @@ import styles from '../css/main.min.module.css'
 
 export default function WizardIntro() {
     const history=useHistory()
-   const {phase,currentLevel,sessionStorageState,dispathcSessionStorage}=useDataContext()
+   const {phase,currentLevel}=useDataContext()
    
    const {route,introDescription}=phase
-//    useEffect(()=>{history.push(`memo`)},[])
     return (
         <Card
             className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center} ${styles.justifyContent_center}`}
@@ -23,7 +22,6 @@ export default function WizardIntro() {
         <Button className={styles.wizard_intro_btn} onClick={()=>{
               history.replace(`/wizard/${route}/${currentLevel}/memo`)
             }} text={'GET GOING'}/>
-                    
                 </Card>
     )
 }
