@@ -1,25 +1,19 @@
 import React,{useState,useEffect} from 'react'
-import {useHistory,useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import { useDataContext } from "../context/Context";
-
 import Card from './Card'
 import styles from '../css/main.min.module.css'
 import Button from "./Button";
 import Loading from '../components/Loading'
 
 export default function MemorizeSession() {
+
   //context
   const {phase,words,currentLevel,dispathcSessionStorage,memoTimeSaver}=useDataContext()
   const {route,levels}=phase
-console.log('from memo',words);
+
+  //route
 const history=useHistory()
-//get session storaged time
-const memoContinued=dispathcSessionStorage({
-  type:"GET_ITEM",
-  payload:{
-    item:'memoContinued'
-  }
-}) 
 
    //state
     const [counter, setCounter] = useState(memoContinued?memoContinued:levels[currentLevel].memoDuration);
@@ -40,7 +34,28 @@ useEffect(() => {
         return ()=>clearTimeout(timer)
   }, [counter,words]);
 
-console.log('commming from memo',words);
+//get session storaged time
+const memoContinued=dispathcSessionStorage({
+  type:"GET_ITEM",
+  payload:{
+    item:'memoContinued'
+  }
+}) 
+
+//fucntion
+const buttonAction=()=>{
+  memoTimeSaver(counter) 
+  history.replace(`/wizard/${route}/${currentLevel}/overlay`)
+  dispathcSessionStorage({
+   type:'SET_ITEM',
+   payload:{
+     item:'memoSavedTime',
+     value:counter
+   }
+ })
+  dispathcSessionStorage({type:'REMOVE',payload:{item:'memoContinued'}})
+}
+
     return (
          <Card
    className={`${styles.page} ${styles.d_flex} ${styles.alignItems_center} ${styles.justifyContent_around}`}
@@ -55,18 +70,7 @@ console.log('commming from memo',words);
          <div>
         <Button className={styles.wizard_memo_btn} 
         disabled={!words&&true}
-        onClick={()=>{
-             memoTimeSaver(counter) 
-             history.replace(`/wizard/${route}/${currentLevel}/overlay`)
-             dispathcSessionStorage({
-              type:'SET_ITEM',
-              payload:{
-                item:'memoSavedTime',
-                value:counter
-              }
-            })
-             dispathcSessionStorage({type:'REMOVE',payload:{item:'memoContinued'}})
-            }}
+        onClick={()=> buttonAction()}
          duration={counter} text ={'FINISH'}
          />
         </div>

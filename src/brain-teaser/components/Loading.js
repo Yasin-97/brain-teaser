@@ -3,7 +3,10 @@ import styles from '../css/main.min.module.css'
 
 
 const Loading = () => {
+  //state
   const [counter,setCounter]=useState(0)
+  
+  //effect
   useEffect(() => {
     let timer;
     if(counter>8)clearTimeout(timer)
@@ -12,14 +15,11 @@ const Loading = () => {
       clearTimeout(timer)
     }
   }, [counter])
-  console.log('comming the counter',counter);
+
   return (
     counter<8?<div className={styles.loadingio_spinner_ellipsis}><div className={styles.ldio_u7a57o0omg}>
     <div></div><div></div><div></div><div></div><div></div>
     </div></div>:<p className={styles.warning_text}>Slow internet! Please check internet connection.</p>
-
-
-
   );
 };
 
