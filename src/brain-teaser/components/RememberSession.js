@@ -170,7 +170,7 @@ export default function RememberSession() {
        ${styles.justifyContent_around}`}
     >
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div style>
+        <div>
           <h4 className={styles.wizard_remem_header}>get them back in order</h4>
           <DroppableContainer
             isDraggedOver={(arg) => {}}
