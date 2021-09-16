@@ -1,20 +1,18 @@
+.overlay_content {
+  display: flex;
+  flex-direction: column;
+}
+.overlay_header {
+  @include header;
+}
 
-.overlay_content{
-    display: flex;
-    flex-direction: column;
+.overlay_text {
+  @include text;
 }
-.overlay_header{
-    @include header;
+.overlay_sec {
+  color: $light-color;
+  font-weight: 500;
 }
-
-.overlay_text{
-    @include text;
-}
-.overlay_sec{
-color: $light-color;
-font-weight: 500;
-}
-.wizard_overlay_btn{
-@include action_Btn;
-
+.wizard_overlay_btn {
+  @include action_Btn;
 }

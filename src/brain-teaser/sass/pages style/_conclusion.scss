@@ -1,34 +1,33 @@
-.conclusion_level{
-@include header;
+.conclusion_level {
+  @include header;
 }
-.conclusion_levelDetails{
-    width: 100%;
-    padding:1rem 2rem;
+.conclusion_levelDetails {
+  width: 100%;
+  padding: 1rem 2rem;
 }
-.conclusion_levelDetail{
-    color: darken($light_color, 25);
-    padding: .5rem;
-    display: flex;
-    justify-content: space-between;
+.conclusion_levelDetail {
+  color: darken($light_color, 25);
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
-.conclusion_detail_value{
-    font-size: .99rem;
-    color: $light_color;
-    font-weight: 500;
+.conclusion_detail_value {
+  font-size: 0.99rem;
+  color: $light_color;
+  font-weight: 500;
 }
-.conclusion_action_btns{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.conclusion_action_btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.conclusion_nextLevel_btn{
-    @include action_Btn;
+.conclusion_nextLevel_btn {
+  @include action_Btn;
 }
-.conclusion_quit_btn{
-    @include action_Btn;
-    background-color: transparent;
-    &:hover{
-        background-color:darken($light_color, 65) ;
-    }
+.conclusion_quit_btn {
+  @include action_Btn;
+  background-color: transparent;
+  &:hover {
+    background-color: darken($light_color, 65);
+  }
 }
-

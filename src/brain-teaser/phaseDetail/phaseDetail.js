@@ -98,6 +98,6 @@ export const expert = {
       wordCollection: 8,
       memoDuration: 30,
       rememDuration: 35,
-    }
+    },
   ],
 };

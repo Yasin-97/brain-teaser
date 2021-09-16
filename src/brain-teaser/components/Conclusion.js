@@ -6,71 +6,115 @@ import Card from "./Card";
 import styles from "../css/main.min.module.css";
 
 export default function Conclusion() {
-  
   //context
-  const { phase, currentLevel,  clearWords, setNextLevel,dispathcSessionStorage } = useDataContext();//levelPoints
+  const {
+    phase,
+    currentLevel,
+    clearWords,
+    setNextLevel,
+    dispathcSessionStorage,
+  } = useDataContext(); //levelPoints
   const { route, levels } = phase;
 
-      //router
-      const history = useHistory();
-  
+  //router
+  const history = useHistory();
+
   //state
-  const [isLastLevel]=useState(currentLevel + 1 === levels.length)
-  
-        //session storage
-        const levelPoints=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'currentLevelPoints' } })
-        const currentSavedTime=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'currentSavedTime' } })
-        const overallPoints=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'overallPoints' } })
-        const overallSavedTime=dispathcSessionStorage({ type:"GET_ITEM", payload:{ item:'overallSavedTime' } })
-  
+  const [isLastLevel] = useState(currentLevel + 1 === levels.length);
 
-    const setOverallData=()=>{
-      {
-        if (!overallPoints) dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallPoints', value:levelPoints }})
-        else {
-          const [newGainedPoint, newTotalPoint] = overallPoints.point.split("/");
-          const [lastGainedPoint, lastTotalPoint] = levelPoints.point.split("/");
-          const GainedPoint = +newGainedPoint + +lastGainedPoint;
-          const TotalPoint = +newTotalPoint + +lastTotalPoint;
-          dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallPoints',value:{
-                exactitude: ((GainedPoint / TotalPoint) * 100).toFixed(),
-                point: GainedPoint + "/" + TotalPoint,
-              }}})
-        }
-      }
+  //session storage
+  const levelPoints = dispathcSessionStorage({
+    type: "GET_ITEM",
+    payload: { item: "currentLevelPoints" },
+  });
+  const currentSavedTime = dispathcSessionStorage({
+    type: "GET_ITEM",
+    payload: { item: "currentSavedTime" },
+  });
+  const overallPoints = dispathcSessionStorage({
+    type: "GET_ITEM",
+    payload: { item: "overallPoints" },
+  });
+  const overallSavedTime = dispathcSessionStorage({
+    type: "GET_ITEM",
+    payload: { item: "overallSavedTime" },
+  });
 
-      {
-      if (!overallSavedTime) dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallSavedTime', value:currentSavedTime }})
-      else dispathcSessionStorage({ type:'SET_ITEM', payload:{ item:'overallSavedTime', value:overallSavedTime + currentSavedTime }})
+  const setOverallData = () => {
+    {
+      if (!overallPoints)
+        dispathcSessionStorage({
+          type: "SET_ITEM",
+          payload: { item: "overallPoints", value: levelPoints },
+        });
+      else {
+        const [newGainedPoint, newTotalPoint] = overallPoints.point.split("/");
+        const [lastGainedPoint, lastTotalPoint] = levelPoints.point.split("/");
+        const GainedPoint = +newGainedPoint + +lastGainedPoint;
+        const TotalPoint = +newTotalPoint + +lastTotalPoint;
+        dispathcSessionStorage({
+          type: "SET_ITEM",
+          payload: {
+            item: "overallPoints",
+            value: {
+              exactitude: ((GainedPoint / TotalPoint) * 100).toFixed(),
+              point: GainedPoint + "/" + TotalPoint,
+            },
+          },
+        });
       }
     }
 
+    {
+      if (!overallSavedTime)
+        dispathcSessionStorage({
+          type: "SET_ITEM",
+          payload: { item: "overallSavedTime", value: currentSavedTime },
+        });
+      else
+        dispathcSessionStorage({
+          type: "SET_ITEM",
+          payload: {
+            item: "overallSavedTime",
+            value: overallSavedTime + currentSavedTime,
+          },
+        });
+    }
+  };
 
   //destruction
   const SavedTime = currentSavedTime;
-  const exactitude =  levelPoints.exactitude
-  const point =  levelPoints.point
-
+  const exactitude = levelPoints.exactitude;
+  const point = levelPoints.point;
 
   //function
-  const nextButtonActoin=()=>{
-    setOverallData()
-    if(isLastLevel) history.replace('/overall-conclusion')
-   else {
-    dispathcSessionStorage({ type:"SET_ITEM", payload:{ item:'words',value:null}})
-        setNextLevel()
-        history.replace(`/wizard/${route}/${currentLevel + 1}/memo`)
-  }
-    dispathcSessionStorage({ type:"REMOVE", payload:{ item:'currentLevelPoints'}})
-    dispathcSessionStorage({ type:"REMOVE", payload:{ item:'currentSavedTime'}})
-    dispathcSessionStorage({ type:"REMOVE", payload:{ item:'words'}})
-    clearWords()
-  }
-  
-  const quitButuonAction=()=>{
-    dispathcSessionStorage({ type:"CLEAR"})
+  const nextButtonActoin = () => {
+    setOverallData();
+    if (isLastLevel) history.replace("/overall-conclusion");
+    else {
+      dispathcSessionStorage({
+        type: "SET_ITEM",
+        payload: { item: "words", value: null },
+      });
+      setNextLevel();
+      history.replace(`/wizard/${route}/${currentLevel + 1}/memo`);
+    }
+    dispathcSessionStorage({
+      type: "REMOVE",
+      payload: { item: "currentLevelPoints" },
+    });
+    dispathcSessionStorage({
+      type: "REMOVE",
+      payload: { item: "currentSavedTime" },
+    });
+    dispathcSessionStorage({ type: "REMOVE", payload: { item: "words" } });
+    clearWords();
+  };
+
+  const quitButuonAction = () => {
+    dispathcSessionStorage({ type: "CLEAR" });
     history.replace("/");
-  }
+  };
 
   return (
     <Card
@@ -82,7 +126,9 @@ export default function Conclusion() {
       <div className={styles.conclusion_levelDetails}>
         <div className={styles.conclusion_levelDetail}>
           <b>Saved time : </b>
-          <span className={styles.conclusion_detail_value}>{SavedTime} sec</span>
+          <span className={styles.conclusion_detail_value}>
+            {SavedTime} sec
+          </span>
         </div>
         <div className={styles.conclusion_levelDetail}>
           <b>Exactitude : </b>

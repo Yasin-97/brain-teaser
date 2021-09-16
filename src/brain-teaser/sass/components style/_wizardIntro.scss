@@ -1,16 +1,15 @@
-.wizard_intro{
-    display: flex;
-    flex-direction: column;
+.wizard_intro {
+  display: flex;
+  flex-direction: column;
 }
 
-.wizard_intro_header{
-    @include header;
-margin-bottom: 2rem;
+.wizard_intro_header {
+  @include header;
+  margin-bottom: 2rem;
 }
-.wizard_intro_text{
-    @include text;
+.wizard_intro_text {
+  @include text;
 }
-.wizard_intro_btn{
-
-    @include action_Btn;
+.wizard_intro_btn {
+  @include action_Btn;
 }

@@ -1,17 +1,16 @@
-
-.header_text{
-    @include header;
-    letter-spacing: 1px;
-    margin-bottom: 5rem;
+.header_text {
+  @include header;
+  letter-spacing: 1px;
+  margin-bottom: 5rem;
 }
 
-.levels{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    min-height: 55%;
+.levels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 55%;
 }
 
-.diff_level_btn{   
-    @include action_Btn;
+.diff_level_btn {
+  @include action_Btn;
 }

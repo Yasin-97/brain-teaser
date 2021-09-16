@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useState,useEffect,useReducer } from "react";
-import {wordAPI} from '../assets/word data/wordData'
-
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { wordAPI } from "../assets/word data/wordData";
 
 //create context
 const DataContext = createContext();
@@ -9,79 +8,91 @@ const DataContext = createContext();
 export const useDataContext = () => useContext(DataContext);
 
 const DataProvider = ({ children }) => {
+  //storage function
+  const dispathcSessionStorage = (action) => {
+    const { type, payload } = action;
+    switch (type) {
+      case "SET_ITEM":
+        return sessionStorage.setItem(
+          payload.item,
+          JSON.stringify(payload.value)
+        );
+      case "GET_ITEM":
+        return JSON.parse(sessionStorage.getItem(payload.item));
+      case "REMOVE":
+        return sessionStorage.removeItem(payload.item);
+      case "CLEAR":
+        return sessionStorage.clear();
 
-  //storage function 
-const dispathcSessionStorage=(action)=>{
-  const {type,payload}=action
-  switch(type){
-    case 'SET_ITEM':
-      return(sessionStorage.setItem(payload.item,JSON.stringify(payload.value)))
-      case 'GET_ITEM':
-        return JSON.parse(sessionStorage.getItem(payload.item))
-      case 'REMOVE':
-        return(sessionStorage.removeItem(payload.item))
-      case 'CLEAR':
-        return(sessionStorage.clear())
+      default:
+        return;
+    }
+  };
 
-        default :
-        return ;
-  }
-}
+  // local storage
+  const sotragePhase = JSON.parse(sessionStorage.getItem("phase"));
+  const storagewords = JSON.parse(sessionStorage.getItem("words"));
+  const storageCurrentLevel = JSON.parse(
+    sessionStorage.getItem("currentLevel")
+  );
+  const storageMemoSavedTime = JSON.parse(
+    sessionStorage.getItem("memoSavedTime")
+  );
+  const storageRememSavedTime = JSON.parse(
+    sessionStorage.getItem("rememSavedTime")
+  );
 
-// local storage
-const sotragePhase=JSON.parse(sessionStorage.getItem('phase'))
-const storagewords=JSON.parse(sessionStorage.getItem('words'))
-const storageCurrentLevel= JSON.parse(sessionStorage.getItem('currentLevel'))
-const storageMemoSavedTime=JSON.parse(sessionStorage.getItem('memoSavedTime'))
-const storageRememSavedTime=JSON.parse(sessionStorage.getItem('rememSavedTime'))
-
-//state
+  //state
   const [phase, setPhase] = useState(sotragePhase);
-  const [currentLevel, setCurrentLevel] = useState( storageCurrentLevel || 0)
-  const [words,setWords]=useState( storagewords||null)
-  const [memoSavedTime, setMemoSavedTime]=useState(storageMemoSavedTime)
-  const [rememSavedTime, setRememSavedTime]=useState(storageRememSavedTime)
+  const [currentLevel, setCurrentLevel] = useState(storageCurrentLevel || 0);
+  const [words, setWords] = useState(storagewords || null);
+  const [memoSavedTime, setMemoSavedTime] = useState(storageMemoSavedTime);
+  const [rememSavedTime, setRememSavedTime] = useState(storageRememSavedTime);
   const [levelPoints, setLevelPoints] = useState();
   const [isOnline, setIsOnline] = useState(true);
 
   //effects
-useEffect(()=>{
-  if(phase&&storagewords==null){
+  useEffect(() => {
+    if (phase && storagewords == null) {
+      const levelWords = [];
+      const checkNET = navigator.onLine;
 
-    const levelWords=[]
-    const checkNET=navigator.onLine
-    
-    new Promise((res,rej)=>{
-      if(checkNET){
-        for(let i=0;i<phase.levels[currentLevel].wordCollection;i++){
-      res(levelWords.push(wordAPI().then(res=>res[0].word)))
+      new Promise((res, rej) => {
+        if (checkNET) {
+          for (let i = 0; i < phase.levels[currentLevel].wordCollection; i++) {
+            res(levelWords.push(wordAPI().then((res) => res[0].word)));
+          }
+        } else rej(setInternetConnection(false));
+      });
+
+      Promise.all(levelWords)
+        .then((res) => {
+          const iterate = res.map((w, i) => {
+            return { id: i.toString(), word: w };
+          });
+          setWords(iterate);
+          dispathcSessionStorage({
+            type: "SET_ITEM",
+            payload: { item: "words", value: iterate },
+          });
+        })
+        .catch((err) => console.log(err));
     }
-  }
-    else rej(setInternetConnection(false))
-  }
-  )
-
-Promise.all(levelWords).then(res=>{
-  const iterate=res.map((w,i)=>{return{id:i.toString(),word:w}});
-  setWords(iterate)
-  dispathcSessionStorage({type:"SET_ITEM",payload:{item:'words',value:iterate}})
-}).catch(err=>console.log(err))
-  }
-  },[phase,currentLevel])
+  }, [phase, currentLevel]);
 
   //function
-  const getPhaseDifficulty = (diff) => setPhase(diff)
-  const clearWords=()=>setWords(null)
-  const memoTimeSaver=(time)=>setMemoSavedTime(time)
-  const rememTimeSaver=(time)=>setRememSavedTime(time)
+  const getPhaseDifficulty = (diff) => setPhase(diff);
+  const clearWords = () => setWords(null);
+  const memoTimeSaver = (time) => setMemoSavedTime(time);
+  const rememTimeSaver = (time) => setRememSavedTime(time);
   const getLevelPoints = (points) => setLevelPoints(points);
   const setInternetConnection = (bool) => setIsOnline(bool);
   const setNextLevel = () => {
-    setCurrentLevel(pre=>pre+1)
-    sessionStorage.setItem('currentLevel',JSON.stringify(currentLevel+1))
+    setCurrentLevel((pre) => pre + 1);
+    sessionStorage.setItem("currentLevel", JSON.stringify(currentLevel + 1));
   };
 
-  function shuffle(array,num) {
+  function shuffle(array, num) {
     let currentIndex = array.length;
     let randomIndex;
     while (currentIndex != 0) {
@@ -92,8 +103,8 @@ Promise.all(levelWords).then(res=>{
         array[currentIndex],
       ];
     }
-    
-    return array.slice(0,num)
+
+    return array.slice(0, num);
   }
 
   const arraySimilarity = (arr1, arr2) => {
@@ -107,17 +118,17 @@ Promise.all(levelWords).then(res=>{
     };
   };
 
-  const cleanUpState=()=>{
-    setPhase(null)
-    setWords(null)
-    dispathcSessionStorage({type:'CLEAR'})
-    setCurrentLevel(0)
-    setLevelPoints(null)
-    setMemoSavedTime(null)
-    setRememSavedTime(null)
-  }
+  const cleanUpState = () => {
+    setPhase(null);
+    setWords(null);
+    dispathcSessionStorage({ type: "CLEAR" });
+    setCurrentLevel(0);
+    setLevelPoints(null);
+    setMemoSavedTime(null);
+    setRememSavedTime(null);
+  };
 
-//
+  //
   const value = {
     //states
     words,

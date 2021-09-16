@@ -1,32 +1,30 @@
-
-.welcome{
-    font-size: 2.5rem;
-    text-transform:capitalize;
-    letter-spacing: 5px;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-   color:$light_color;
-   font-weight: 100;
-   font-family: 'MontserratAlternates-Light';
+.welcome {
+  font-size: 2.5rem;
+  text-transform: capitalize;
+  letter-spacing: 5px;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: $light_color;
+  font-weight: 100;
+  font-family: "MontserratAlternates-Light";
 }
-.to{
-    font-family: 'MontserratAlternates-Light';
+.to {
+  font-family: "MontserratAlternates-Light";
 }
-.game_name{
-    color:  $purple_color;
-    font-size: 2rem;
-    text-transform:uppercase;
-    letter-spacing: 5px;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    font-weight:900;
-    font-family: 'MontserratAlternates-Light';
+.game_name {
+  color: $purple_color;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 900;
+  font-family: "MontserratAlternates-Light";
 }
-.desc{
-    @include text;
-    margin-top:5rem;
+.desc {
+  @include text;
+  margin-top: 5rem;
 }
-.intro_btn{
-@include action_Btn;
+.intro_btn {
+  @include action_Btn;
 }
-

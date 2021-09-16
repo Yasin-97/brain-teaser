@@ -1,33 +1,32 @@
-
-.word_Colc{
-    display: flex;
-    flex-wrap: wrap;
-width: 100%;
+.word_Colc {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-.word_Case{
-    flex-grow: 1;
-    max-width: 100%;
-    text-align: center;
-   padding: .7rem 1rem;
-   margin: .3rem ;
-   border-radius: .3rem;
-   font-weight: bold;
-   letter-spacing: 1px;
-   box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 0.425);
+.word_Case {
+  flex-grow: 1;
+  max-width: 100%;
+  text-align: center;
+  padding: 0.7rem 1rem;
+  margin: 0.3rem;
+  border-radius: 0.3rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 0.425);
 }
-.wizard_Btn{
-    margin: 1.5rem;
-    width: 15rem;
-    height: 3.5rem;
-    text-transform: uppercase;
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 2px;
-    border: none;
-    text-decoration: none;
-    transition: all .3s ease-in-out;
-    &:hover{
-        transform: scale(1.01,1.01);
-    }
+.wizard_Btn {
+  margin: 1.5rem;
+  width: 15rem;
+  height: 3.5rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  border: none;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    transform: scale(1.01, 1.01);
+  }
 }

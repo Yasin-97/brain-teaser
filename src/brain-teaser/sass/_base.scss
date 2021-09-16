@@ -70,68 +70,64 @@ $desc_font_size: 1.15rem;
   text-align: center;
 }
 
-.onWait_state{
-
+.onWait_state {
 }
-.onWait_btn{
-background: darken($purple_color, 40) !important;
+.onWait_btn {
+  background: darken($purple_color, 40) !important;
 }
 
-
-.offline_message{
+.offline_message {
   position: fixed;
- 
+
   max-height: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: .3rem;
-  background-color: #FF8A65;
-  color: #37474F;
-  font-size: .9rem;
+  border-radius: 0.3rem;
+  background-color: #ff8a65;
+  color: #37474f;
+  font-size: 0.9rem;
   font-weight: 500;
   overflow: hidden;
-  transition: all .2s ease-in-out;
-  &_btn{
+  transition: all 0.2s ease-in-out;
+  &_btn {
     align-self: flex-end;
     background: darken($light_color, 30);
-  color:#37474F;
-  margin:  0 .3rem;
-  padding: .45rem 1.4rem;
-  text-transform: uppercase;
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  border: none;
-  border-radius: 0.3rem;
-  transition: all 0.1s ease-in-out;
-  &:hover {
-    background: darken($light_color, 34);
-    color: #37474F;
+    color: #37474f;
+    margin: 0 0.3rem;
+    padding: 0.45rem 1.4rem;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 0.3rem;
+    transition: all 0.1s ease-in-out;
+    &:hover {
+      background: darken($light_color, 34);
+      color: #37474f;
+    }
   }
-  }
-  &_show{
+  &_show {
     max-height: 7rem;
-    margin: .5rem;
-    padding: .5rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
   }
 }
 
-
-
-.danger_text{
-  border: #FBE9E7 1px solid;
-  border-radius: .3rem;
-  background-color: #FFAB91;
-  color: #37474F;
+.danger_text {
+  border: #fbe9e7 1px solid;
+  border-radius: 0.3rem;
+  background-color: #ffab91;
+  color: #37474f;
   padding: 1rem;
   font-weight: 500;
 }
-.warning_text{
-  border-radius: .3rem;
-  background-color:#FBC02D;
-  color: #37474F;
+.warning_text {
+  border-radius: 0.3rem;
+  background-color: #fbc02d;
+  color: #37474f;
   padding: 1rem;
   font-weight: 500;
 }
