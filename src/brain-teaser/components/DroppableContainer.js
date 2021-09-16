@@ -7,7 +7,7 @@ const Container = styled.div`
   padding: 0.5rem;
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  width: 90%;
   border-radius: 0.3rem;
   box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 0.7);
   min-height: 150px;

@@ -51,9 +51,11 @@ const DataProvider = ({ children }) => {
   const [levelPoints, setLevelPoints] = useState();
   const [isOnline, setIsOnline] = useState(true);
 
+
+  console.log(words);
   //effects
   useEffect(() => {
-    if (phase && storagewords == null) {
+    if (phase && storagewords === null) {
       const levelWords = [];
       const checkNET = navigator.onLine;
 
@@ -76,7 +78,6 @@ const DataProvider = ({ children }) => {
             payload: { item: "words", value: iterate },
           });
         })
-        .catch((err) => console.log(err));
     }
   }, [phase, currentLevel]);
 

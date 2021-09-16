@@ -8,10 +8,13 @@ $desc_font_size: 1.15rem;
 //mixins
 @mixin header {
   text-transform: capitalize;
-  font-size: $header_font_size;
+  font-size: 1.7rem;
   color: $light-color;
   text-align: center;
   margin-bottom: 2rem;
+  @media screen and (min-width:480){
+    font-size: $header_font_size;
+  }
 }
 @mixin text {
   font-size: $desc_font_size;
@@ -20,20 +23,23 @@ $desc_font_size: 1.15rem;
 }
 
 @mixin action_Btn {
-  background: darken($purple_color, 20);
+  background: darken($purple_color, 15);
   color: $light-color;
   margin: 1.5rem;
   padding: 1.2rem 4.5rem;
   text-transform: uppercase;
-  font-size: 1rem;
   font-weight: 500;
+  font-size: .85rem;
   letter-spacing: 2px;
   border: none;
   border-radius: 0.3rem;
   text-decoration: none;
   transition: all 0.1s ease-in-out;
+  @media screen and (min-width:480){
+    font-size: 1rem;
+  }
   &:hover {
-    background: darken($purple_color, 16);
+    background: darken($purple_color, 13);
     color: $light-color;
   }
 }
@@ -70,10 +76,9 @@ $desc_font_size: 1.15rem;
   text-align: center;
 }
 
-.onWait_state {
-}
 .onWait_btn {
-  background: darken($purple_color, 40) !important;
+  background: darken($purple_color, 32) !important;
+  color: darken($light-color,25) !important;
 }
 
 .offline_message {
